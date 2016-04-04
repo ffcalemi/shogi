@@ -15,17 +15,19 @@ public class Pawn extends ChessMen {
 	}
 	@Override
 	public ArrayList<Position> calculatingMoves(){
+		/**
+		 * First check the role of the pawn and then check whether it is updated or not
+		 */
 		ArrayList<Position> allowedMoves = new ArrayList<>();
-
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow()-1 , this.getPosition().getCol()) ) ) allowedMoves.add(new Position(this.getPosition().getRow()-1 , this.getPosition().getCol()) );
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow()-1 , this.getPosition().getCol()-1))) allowedMoves.add(new Position(this.getPosition().getRow()-1 , this.getPosition().getCol()-1) );
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow() , this.getPosition().getCol()-1))) allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol()-1) );
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow()+1 , this.getPosition().getCol()))) allowedMoves.add(new Position(this.getPosition().getRow()+1 , this.getPosition().getCol()) );
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow()+1 , this.getPosition().getCol()+1))) allowedMoves.add(new Position(this.getPosition().getRow()+1 , this.getPosition().getCol()+1) );
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow() , this.getPosition().getCol()+1))) allowedMoves.add(new Position(this.getPosition().getRow() , this.getPosition().getCol()+1) );
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow()-1 , this.getPosition().getCol()+1)))allowedMoves.add(new Position(this.getPosition().getRow()-1 , this.getPosition().getCol()+1) );
-		if( gameBoard.canGo(this , new Position(this.getPosition().getRow()+1 , this.getPosition().getCol()-1))) allowedMoves.add(new Position(this.getPosition().getRow()+1 , this.getPosition().getCol()-1) );
-
+		if
+		if (!getNormal()) {
+			if (gameBoard.canGo(this, new Position(this.getPosition().getCol()-1, this.getPosition().getRow()))) allowedMoves.add(new Position(this.getPosition().getCol()-1,this.getPosition().getRow()));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getCol()-1, this.getPosition().getRow()+1))) allowedMoves.add(new Position(this.getPosition().getCol()-1,this.getPosition().getRow()+1));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow()))) allowedMoves.add(new Position(this.getPosition().getCol(),this.getPosition().getRow()));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow()))) allowedMoves.add(new Position(this.getPosition().getCol(),this.getPosition().getRow()));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow()))) allowedMoves.add(new Position(this.getPosition().getCol(),this.getPosition().getRow()));
+		}
+		if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow()))) allowedMoves.add(new Position(this.getPosition().getCol(),this.getPosition().getRow()));
 		return allowedMoves;
 	}
 

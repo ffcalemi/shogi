@@ -3,7 +3,7 @@ import shogi.piece.ChessMen;
 import shogi.piece.Lance;
 
 /**
- * @author sina
+ * @author ahmad
  * @version 1.0.0
  */
 public class GameBoard {
@@ -15,6 +15,10 @@ public class GameBoard {
 	}
 
 	private void putPieces(){
+		/**
+		 *
+		 */
+
 	}
 
 	public boolean canGo(ChessMen chessMen, Position position){
