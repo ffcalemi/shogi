@@ -65,6 +65,14 @@ public class GameBoard {
 			table[6][i] = new           Pawn(new Position(6,i), ChessMen.roles.PLAYER_WHITE_ROLE,this);
 	}
 
+	/**
+	 * This method checks weather a chessman can go to a position or not.
+	 * It is used by the chessmen classes to generate their available moves. Available moves are the moves to
+	 * the empty cells and the cells filled with the opponent pieces.(To kick that piece)
+	 * @param chessMen The object of the piece class
+	 * @param position The target position
+	 * @return  True if that cell is available and false it it is not.
+	 */
 	public boolean canGo(ChessMen chessMen, Position position){
 		if (table[position.getRow()][position.getCol()] == null && position.isAvailable())
 			return true;
@@ -72,5 +80,24 @@ public class GameBoard {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * Returns the ChessMen object located in the position in the array
+	 * @param position The position of the desired ChessMen objec
+	 * @return The ChessMen object located in the position
+	 */
+	public ChessMen getChessMan(Position position){
+		/**
+		 * Checks whether the taken position is available(in the array range) or not
+		 * If it is not so, an critical error has happened and it should be exited.
+		 */
+		if (position.isAvailable()){
+			return table[position.getRow()][position.getCol()];
+		}else {
+			System.err.println("The cell selected is not in the array range");
+			System.exit(0);
+			return null;
+		}
 	}
 }
