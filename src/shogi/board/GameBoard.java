@@ -20,7 +20,7 @@ public class GameBoard {
 	public boolean canGo(ChessMen chessMen, Position position){
 		if (table[position.getRow()][position.getCol()] == null && position.isAvailable())
 			return true;
-		else if (table[position.getRow()][position.getCol()].getPlayerRole() != chessMen.getPlayerRole()&& position.isAvailable())
+		else if ((table[position.getRow()][position.getCol()].getPlayerRole() != chessMen.getPlayerRole()) && position.isAvailable())
 			return true;
 		else
 			return false;
