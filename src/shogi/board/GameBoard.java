@@ -1,17 +1,31 @@
 package shogi.board;
 import shogi.piece.*;
 
+
+import java.util.ArrayList;
+
 /**
  * @author ahmad
  * @version 1.0.0
  */
-public class GameBoard {
-	ChessMen[][] table;
+public class GameBoard implements Cloneable{
+	private ChessMen[][] table;
+	private ArrayList<ChessMen> whiteKickeds;
+	private ArrayList<ChessMen> blackKickeds;
 
 	public GameBoard() {
 		this.table = new ChessMen[9][9];
 		putPieces();
 	}
+
+	/**
+	 * This is a cloning constructor.
+	 * @param gameBoard
+	 */
+	public GameBoard(GameBoard gameBoard){
+
+	}
+
 
 	private void putPieces(){
 		/**
@@ -74,6 +88,7 @@ public class GameBoard {
 	 * @return  True if that cell is available and false it it is not.
 	 */
 	public boolean canGo(ChessMen chessMen, Position position){
+		// Todo check checking
 		if (table[position.getRow()][position.getCol()] == null && position.isAvailable())
 			return true;
 		else if ((table[position.getRow()][position.getCol()].getPlayerRole() != chessMen.getPlayerRole()) && position.isAvailable())
@@ -99,5 +114,33 @@ public class GameBoard {
 			System.exit(0);
 			return null;
 		}
+	}
+
+	public boolean canMove(Position source, Position target){
+		if (table[source.getRow()][source.getCol()] == null)
+			return false;
+
+		if (table[source.getRow()][source.getCol()].calculatingMoves().indexOf(target) == -1)   //  Target position is not a valid move for this piece
+			return false;
+
+		/**
+		 * To check if the piece located in the source check condition will be happened or not
+		 */
+
+
+		return true;
+	}
+
+	public void move(Position source, Position target){
+
+	}
+
+	public GameBoard clnoe() throws CloneNotSupportedException {
+		GameBoard gameBoard = (GameBoard)super.clone();
+		gameBoard.table = this.table.clone();
+		gameBoard.whiteKickeds = (ArrayList<ChessMen>) this.whiteKickeds.clone();
+		gameBoard.blackKickeds = (ArrayList<ChessMen>) this.blackKickeds.clone();
+
+		return gameBoard;
 	}
 }
