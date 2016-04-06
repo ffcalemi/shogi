@@ -84,4 +84,9 @@ public class GoldGeneral extends ChessMen {
 
 		return allowedMoves;
 	}
+
+	@Override
+	public String toString() {
+		return "GG";
+	}
 }

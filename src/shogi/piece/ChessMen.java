@@ -41,4 +41,6 @@ public abstract class ChessMen {
 	public enum  roles {
 		PLAYER_BLACK_ROLE,PLAYER_WHITE_ROLE
 	}
+
+	public abstract String toString();
 }

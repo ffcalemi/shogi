@@ -138,7 +138,8 @@ public class SilverGeneral extends ChessMen {
 
 	}
 
-
-
-
+	@Override
+	public String toString() {
+		return "SG";
+	}
 }

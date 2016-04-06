@@ -64,4 +64,9 @@ public class Rock extends ChessMen {
 		}
 		return allowedMoves;
 	}
+
+	@Override
+	public String toString() {
+		return "Ro";
+	}
 }
