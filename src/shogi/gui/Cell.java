@@ -24,6 +24,7 @@ public class Cell  extends  JPanel{
     private Color getEmptyColorBlack =  new Color(0,0,0);
     private GameBoard gameBoard ;
     private ChessMen[][] table;
+    public int hasBull = 1;
 
     public Cell(Position pos, GameBoard gm) {
         this.position = pos;
@@ -44,7 +45,12 @@ public class Cell  extends  JPanel{
         this.setLocation(this.position.getRow()*this.width, (this.position.getCol()*this.width));
         this.setSize(this.width, this.width);
         g.fillRoundRect(0,0,this.width,this.width,4 ,4);
-
+        if( table[position.getCol()][position.getRow()]!=null) {
+            g.setColor(Color.PINK);
+            g.fillOval(13, 13, this.width / 2, this.width / 2);
+        }
+      //  this.setLocation(this.position.getRow()*this.width+35, (this.position.getCol()*this.width+35));
+//        g.fillRoundRect(35,35,this.width,this.width);
     }
 
 }

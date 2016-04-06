@@ -34,9 +34,9 @@ public class GameMap extends JPanel {
         int i = 0;
         for(r=0 ; r<9 ;r++){
             for(c=0; c<9 ; c++){
-
-                add ( new Cell(new Position(r,c), gameBoard));
-//                cells.add(new Cell(new Position(r,c),gameBoard));
+            Cell a = new Cell(new Position(r,c), gameBoard);
+                this.add (a);
+                cells.add(a);
 
             }
         }
