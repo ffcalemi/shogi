@@ -1,12 +1,16 @@
 package shogi.board;
 import shogi.piece.*;
 
+import java.util.ArrayList;
+
 /**
  * @author ahmad
  * @version 1.0.0
  */
 public class GameBoard {
-	ChessMen[][] table;
+	private ChessMen[][] table;
+	private ArrayList<ChessMen> whiteKickedPieces;
+	private ArrayList<ChessMen> blackKickedPieces;
 
 	public GameBoard() {
 		this.table = new ChessMen[9][9];
@@ -15,6 +19,36 @@ public class GameBoard {
 
 	public ChessMen[][] getTable() {
 		return table;
+	}
+
+	private boolean checkCheck(ChessMen.roles role){
+		/**
+		 * Check whether the player with role is checked or not
+		 */
+
+		//  Finding the the checked king
+		Position checkedKingPosition;
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if ((table[i][j] instanceof King) && (table[i][j].getPlayerRole() == role)) {
+					checkedKingPosition = table[i][j].getPosition();
+					break;
+				}
+			}
+		}
+
+		boolean isChecked = false;
+		//  Check if any pieces can attack the king
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (table[i][j].getPlayerRole() != role){
+					if (table[i][j].calculatingMoves().indexOf(checkedKingPosition) != -1){
+						isChecked = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	private void putPieces(){
