@@ -13,6 +13,10 @@ public class GameBoard {
 		putPieces();
 	}
 
+	public ChessMen[][] getTable() {
+		return table;
+	}
+
 	private void putPieces(){
 		/**
 		 * We contract out to put the white pieces at the bottom of the table(at the [8][] and [7][] indexes)
