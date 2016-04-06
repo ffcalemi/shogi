@@ -1,6 +1,6 @@
 package shogi.gui;
 
-import javafx.geometry.Pos;
+
 import shogi.board.GameBoard;
 import shogi.board.Position;
 import shogi.piece.ChessMen;
