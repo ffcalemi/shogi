@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class IncomingChessMen extends JPanel {
     public IncomingChessMen() {
-//        this.setSize(90,getHeight());
+//         this.setSize(90,getHeight());
         setBackground(Color.RED);
     }
 }

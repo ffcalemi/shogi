@@ -1,5 +1,6 @@
 package shogi.gui;
 
+import shogi.board.GameBoard;
 import shogi.board.Position;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class GameWindow extends Window {//TODO  parivate Menu menu;
     public GameWindow() {
         super();
         this.setLayout(null);
-        this.add(gameMap = new GameMap());
+        this.add(gameMap = new GameMap(new GameBoard()));
         whitePlayerList = new IncomingChessMen();
         blackPlayerList = new IncomingChessMen();
         whitePlayerList.setLocation(0,200);
