@@ -7,10 +7,15 @@ import java.util.ArrayList;
  * @author ahmad
  * @version 1.0.0
  */
-public class GameBoard {
+public class GameBoard implements Cloneable{
+	/**
+	 * Todo : IF ANY FIELD IS ADDED TO THE CLASS IT SHOULD BE UPDATED IN THE CLONE METHOD
+	 */
 	private ChessMen[][] table;
 	private ArrayList<ChessMen> whiteKickedPieces;
 	private ArrayList<ChessMen> blackKickedPieces;
+	private boolean isWhiteChecked;
+	private boolean isBlackCheck;
 
 	public GameBoard() {
 		this.table = new ChessMen[9][9];
@@ -27,7 +32,7 @@ public class GameBoard {
 		 */
 
 		//  Finding the the checked king
-		Position checkedKingPosition;
+		Position checkedKingPosition = new Position(0,0);
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				if ((table[i][j] instanceof King) && (table[i][j].getPlayerRole() == role)) {
@@ -49,12 +54,15 @@ public class GameBoard {
 				}
 			}
 		}
+
+		return isChecked;
 	}
 
 	private void putPieces(){
 		/**
 		 * We contract out to put the white pieces at the bottom of the table(at the [8][] and [7][] indexes)
 		 * and put the black pieces at the top of the table(at [0][] and [1][] indexes)
+		 * And at the begining of the game two players are not checked
 		 */
 		/**
 		 * L K S G K G S K L
@@ -67,6 +75,9 @@ public class GameBoard {
 		 * - B - - - - - R -
 		 * L K S G K G S K L
 		 */
+
+		isBlackCheck = false;
+		isWhiteChecked = false;
 
 		//  Black pieces putting
 		table[0][0] = new Lance         (new Position(0,0), ChessMen.roles.PLAYER_BLACK_ROLE,this);
@@ -120,6 +131,50 @@ public class GameBoard {
 			return false;
 	}
 
+	public void move(Position source, Position target) {
+		if (table[target.getRow()][target.getCol()] != null){
+			//  Kicking procedure
+			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE) {
+				blackKickedPieces.add(table[target.getRow()][target.getCol()]);
+			} else {
+				whiteKickedPieces.add(table[target.getRow()][target.getCol()]);
+			}
+		}
+		table[target.getRow()][target.getCol()] = table[source.getRow()][source.getCol()];
+		table[source.getRow()][source.getCol()] = null;
+	}
+
+	public boolean canGo(Position source, Position target){
+		if (table[source.getRow()][source.getCol()] == null)
+			return false;
+		if ((table[target.getRow()][target.getCol()] != null) ||
+				(table[target.getRow()][target.getCol()].getPlayerRole() == table[source.getRow()][source.getCol()].getPlayerRole())){
+			return false;
+		}
+
+		//  Check if with this move check happened
+		GameBoard clonedForCheckChecking = clone();
+		clonedForCheckChecking.move(source,target);
+		if (checkCheck(table[source.getCol()][source.getRow()].getPlayerRole()))
+			return false;
+
+		//  Check if any player is checked and with this move this check remains
+		if (isBlackCheck){
+			clonedForCheckChecking = clone();
+			clonedForCheckChecking.move(source,target);
+			if (checkCheck(ChessMen.roles.PLAYER_BLACK_ROLE))
+				return false;
+		}
+		if (isWhiteChecked){
+			clonedForCheckChecking = clone();
+			clonedForCheckChecking.move(source,target);
+			if (checkCheck(ChessMen.roles.PLAYER_WHITE_ROLE))
+				return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Returns the ChessMen object located in the position in the array
 	 * @param position The position of the desired ChessMen objec
@@ -137,5 +192,32 @@ public class GameBoard {
 			System.exit(0);
 			return null;
 		}
+	}
+
+	public GameBoard clone(){
+		GameBoard gameBoard = new GameBoard();
+		gameBoard.table = this.table.clone();
+		gameBoard.blackKickedPieces = (ArrayList<ChessMen>) this.blackKickedPieces.clone();
+		gameBoard.whiteKickedPieces= (ArrayList<ChessMen>) this.whiteKickedPieces.clone();
+		gameBoard.isWhiteChecked = this.isWhiteChecked;
+		gameBoard.isBlackCheck = this.isBlackCheck;
+
+		return gameBoard;
+	}
+
+	@Override
+	public String toString() {
+		String result = "";
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (table[i][j] != null)
+					result = result + table[i][j] + " ";
+				else
+					result = result + "  " + " ";
+			}
+			result = result + "\n";
+		}
+
+		return result;
 	}
 }
