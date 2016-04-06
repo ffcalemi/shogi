@@ -6,10 +6,6 @@ import shogi.piece.*;
  * @version 1.0.0
  */
 public class GameBoard {
-	public ChessMen[][] getTable() {
-		return table;
-	}
-
 	ChessMen[][] table;
 
 	public GameBoard() {
