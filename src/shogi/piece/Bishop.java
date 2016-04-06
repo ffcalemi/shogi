@@ -86,4 +86,8 @@ public class Bishop extends ChessMen{
 		return allowedMoves;
 	}
 
+	@Override
+	public String toString() {
+		return "Bi";
+	}
 }

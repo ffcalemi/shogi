@@ -67,4 +67,9 @@ public class Lance extends ChessMen {
 		}
 		return allowedMoves;
 	}
+
+	@Override
+	public String toString() {
+		return "La";
+	}
 }

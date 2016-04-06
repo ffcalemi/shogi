@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class King extends ChessMen{
 
+
 	public King(Position pos, roles role, GameBoard gameBoard) {
 		super.position = pos;
 		super.setPlayerRole(role);
@@ -46,4 +47,8 @@ public class King extends ChessMen{
 		return allowedMoves;
 	}
 
+	@Override
+	public String toString() {
+		return "Ki";
+	}
 }
