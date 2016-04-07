@@ -55,26 +55,23 @@ public class GameMap extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             ArrayList<Position> positions = new ArrayList<>();
-            System.out.println(e.getX());
-            System.out.println(e.getY());
-
-            System.out.println("ssssss");
-            ChessMen chessMen = table[e.getX()/70][e.getY()/70];
-            System.out.println("chesmen  "+ chessMen.getPosition().getRow());
-            System.out.println("chesmen  "+ chessMen.getPosition().getCol());
-            System.out.println(chessMen.getPlayerRole());
-            System.out.println(chessMen.getClass());
-
+            ChessMen chessMen = table[e.getY()/70][e.getX()/70];
             positions = chessMen.calculatingMoves();
             for(  int i=0 ; i< positions.size(); i++){
-                System.out.println(     cells.get(positions.get(i).getCol()*9 + positions.get(i).getRow()).getPosition().getCol());
-                cells.get(positions.get(i).getCol()*9 + positions.get(i).getRow()).setBackground(Color.CYAN);
+                System.out.println(cells.get(positions.get(i).getRow()*9 + positions.get(i).getCol()).getPosition().getCol());
+                int n = positions.get(i).getCol()*9 + positions.get(i).getRow();
+              Cell c =  cells.get(n);
+                c.setBackground(c.getCorrectColor());
             }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-
+            for ( Cell cell : cells){
+                if( (cell.getPosition().getCol()+cell.getPosition().getRow())%2==0)
+                cell.setBackground(cell.getEvenBackground());
+                else cell.setBackground(cell.getOddBackgrand());
+            }
         }
 
         @Override
