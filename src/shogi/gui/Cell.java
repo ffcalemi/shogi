@@ -28,23 +28,37 @@ public class Cell  extends  JPanel  {
     private Position position;
 
     private Color wrongColor = new Color(255,0,0);
+
+    public Color getCorrectColor() {
+        return correctColor;
+    }
+
     private Color correctColor = new Color(0,255,0);
-    private Color emptyColorWhite = new Color(255,255,255);
-    private Color getEmptyColorBlack =  new Color(0,0,0);
-    private GameBoard gameBoard ;
+    private Color evenBackground = new Color(139,69,19);
+    private Color oddBackgrand =  new Color(210,180,140);
+
+    private  GameBoard gameBoard;
+    public Color getEvenBackground() {
+        return evenBackground;
+    }
+
+    public Color getOddBackgrand() {
+        return oddBackgrand;
+    }
+
     private ChessMen[][] table;
     private Character  gettingSignOfChessMen(){
     Character ch ;
-    if( table[position.getCol()][position.getRow()].getClass().getSimpleName().compareTo("SilverGeneral")==0){
+    if( table[position.getRow()][position.getCol()].getClass().getSimpleName().compareTo("SilverGeneral")==0){
         ch = 's';
         return ch;
     }
-        else if (table[position.getCol()][position.getRow()].getClass().getSimpleName().compareTo("Knight")==0 ) {
+        else if (table[position.getRow()][position.getCol()].getClass().getSimpleName().compareTo("Knight")==0 ) {
         ch = 'N';
         return ch;
     }
         else {
-            ch = table[position.getCol()][position.getRow()].getClass().getSimpleName().charAt(0);
+            ch = table[position.getRow()][position.getCol()].getClass().getSimpleName().charAt(0);
         }
             return ch;
         }
@@ -60,11 +74,9 @@ public class Cell  extends  JPanel  {
         this.position = pos;
         this.gameBoard = gm;
         this.table = gameBoard.getTable();
-        this.setLocation(this.position.getRow()*this.width, (this.position.getCol()*this.width));
+        this.setLocation(this.position.getCol()*this.width, (this.position.getRow()*this.width));
         this.setSize(70,70);
-        System.out.println(this.getSize());
         if((position.getRow()+position.getCol())%2 ==0){
-            System.out.println("here1");
 
                this.setBackground(new Color(139,69,19));
          //   this.set
@@ -72,6 +84,7 @@ public class Cell  extends  JPanel  {
         else {
            this.setBackground(new Color(210,180,140));
         }
+        repaint();
     }
 
     public void paint(Graphics g) {
@@ -82,12 +95,12 @@ public class Cell  extends  JPanel  {
 //        else {
 //            g.setColor(new Color(210,180,140));
 //        }
-//        this.setLocation(this.position.getRow()*this.width, (this.position.getCol()*this.width));
+        this.setLocation(this.position.getCol()*this.width, (this.position.getRow()*this.width));
 //        this.setSize(this.width, this.width);
 //      //  g.fillRoundRect(0,0,this.width,this.width,4 ,4);
-        if( table[position.getCol()][position.getRow()]!=null) {
+        if( table[position.getRow()][position.getCol()]!=null) {
 
-            if(table[position.getCol()][position.getRow()].getPlayerRole()== ChessMen.roles.PLAYER_WHITE_ROLE ){
+            if(table[position.getRow()][position.getCol()].getPlayerRole()== ChessMen.roles.PLAYER_WHITE_ROLE ){
                 g.setColor(Color.white);
                 int []x = new int [5];
                 int []y= new int [5];
@@ -113,7 +126,7 @@ public class Cell  extends  JPanel  {
 
 
             }
-            else if ( table[position.getCol()][position.getRow()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
+            else if ( table[position.getRow()][position.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
                 {
                     g.setColor(Color.black);
                     int []x = new int [5];
@@ -141,8 +154,19 @@ public class Cell  extends  JPanel  {
                 }
            // g.fillOval(13, 13, this.width / 2, this.width / 2);
         }
+
+
       //  this.setLocation(this.position.getRow()*this.width+35, (this.position.getCol()*this.width+35));
 //        g.fillRoundRect(35,35,this.width,this.width);
+    }
+    protected void remove(ChessMen chessMen){
+        table[chessMen.getPosition().getRow()][chessMen.getPosition().getCol()]=null;
+       this.repaint();
+
+    }
+    protected void addChessMan(ChessMen chessMen ){
+        table[this.getPosition().getRow()][this.getPosition().getCol()] = chessMen;
+        this.repaint();
     }
 
 

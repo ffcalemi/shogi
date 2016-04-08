@@ -30,16 +30,16 @@ public class GoldGeneral extends ChessMen {
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter));
 				}
-				//v( 1, -1)
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter))) {
-					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter));
+				//v( -1, +1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() -counter, this.getPosition().getCol() + counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() -counter, this.getPosition().getCol() +counter));
 				}
 				// v( -1,0)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()));
 				}
-				//v( 1,0)
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol()))) {
+				//v( +1,0)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() +counter, this.getPosition().getCol()))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol()));
 				}
 				//v(0,-1)
@@ -52,13 +52,13 @@ public class GoldGeneral extends ChessMen {
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() -counter))) {
 					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter));
 				}
-				//v(-1,+1)
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() + counter))) {
-					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() + counter));
-				}
-				//v( 1, +1)
+				//v(+1,+1)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() + counter))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() + counter));
+				}
+				//v(+ 1, -1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter));
 				}
 				// v( -1,0)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()))) {
