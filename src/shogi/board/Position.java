@@ -40,4 +40,12 @@ public class Position {
 	public void setRow(int row) {
 		this.row = row;
 	}
+
+	@Override
+	public String toString() {
+		return "Position{" +
+				"col=" + col +
+				", row=" + row +
+				'}';
+	}
 }
