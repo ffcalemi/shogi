@@ -24,10 +24,10 @@ public class SilverGeneral extends ChessMen {
 		ArrayList<Position> allowedMoves = new ArrayList<>();
 		if (super.getNormal()) {
 			if( this.getPlayerRole()== roles.PLAYER_WHITE_ROLE){
-				//	v( 0,1)
+				//	v( -1,0)
 				int counter = 1;
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() + counter))) {
-					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() + counter));
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() ))) {
+					allowedMoves.add(new Position(this.getPosition().getRow()- counter, this.getPosition().getCol() ));
 				}
 				//v(-1,-1)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter))) {
@@ -47,10 +47,10 @@ public class SilverGeneral extends ChessMen {
 					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() + counter));
 				}
 			}else if ( this.getPlayerRole() == roles.PLAYER_BLACK_ROLE){
-				//	v( 0,-1)
+				//	v( +1,0)
 				int counter = 1;
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter))) {
-					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter));
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow()+ counter, this.getPosition().getCol() ))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() ));
 				}
 				//v(-1,-1)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter))) {
@@ -74,7 +74,6 @@ public class SilverGeneral extends ChessMen {
 			}
 		} else if (! super.getNormal()) {
 			if( this.getPlayerRole() == roles.PLAYER_WHITE_ROLE) {
-
 				//	v( 0,1)
 				int counter = 1;
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() + counter))) {
@@ -84,17 +83,17 @@ public class SilverGeneral extends ChessMen {
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter));
 				}
-				//v( 1, -1)
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter))) {
-					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter));
+				//v( -1, +1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() -counter, this.getPosition().getCol() + counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() -counter, this.getPosition().getCol() +counter));
 				}
 				// v( -1,0)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()));
 				}
-				//v( 1,0)
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol()))) {
-					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol()));
+				//v(- 1,0)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()));
 				}
 				//v(0,-1)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter))) {
@@ -107,13 +106,13 @@ public class SilverGeneral extends ChessMen {
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() -counter))) {
 					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter));
 				}
-				//v(-1,+1)
-				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() + counter))) {
-					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() + counter));
-				}
-				//v( 1, +1)
+				//v(+1,+1)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() + counter))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() + counter));
+				}
+				//v(+ 1, -1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter));
 				}
 				// v( -1,0)
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()))) {
@@ -127,7 +126,6 @@ public class SilverGeneral extends ChessMen {
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() + counter))) {
 					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() +counter));
 				}
-
 
 
 			}

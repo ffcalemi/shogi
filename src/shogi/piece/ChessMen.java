@@ -12,14 +12,16 @@ import java.util.ArrayList;
 public abstract class ChessMen {
 
 	private boolean isNormal;
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
 	protected GameBoard gameBoard;
 	protected Position position;
 
 	private roles playerRole;
 
-	public ChessMen(){
-		isNormal = true;
-	}
 	public abstract ArrayList<Position> calculatingMoves();
 
 	public Position getPosition() {

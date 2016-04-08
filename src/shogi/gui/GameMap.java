@@ -3,8 +3,11 @@ package shogi.gui;
 import shogi.board.GameBoard;
 import shogi.board.Position;
 import shogi.piece.ChessMen;
+import shogi.piece.Pawn;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -20,10 +23,19 @@ public class GameMap extends JPanel {
     private GameBoard gameBoard;
     private ChessMen[][] table = new ChessMen[9][9];
     private ArrayList<Cell> cells = new ArrayList<>();
+    private ChessMen chessManMover;
     private  Position position;
+    //TODO handleing  turns here? or in gameBoard?
+
+    Border  bevelBorder = BorderFactory.createRaisedBevelBorder();
+    Border lineBorder = LineBorder.createBlackLineBorder();
+
     public Position getPosition() {
         return position;
     }
+
+
+
 
     public GameMap (GameBoard gm){
         this.setLayout(null);
@@ -33,8 +45,9 @@ public class GameMap extends JPanel {
         this.table = gameBoard.getTable();
         gameBoard = new GameBoard();
         table = gameBoard.getTable();
-        this.mapInitializer();
         this.addMouseListener(new myMouselistener());
+        this.mapInitializer();
+
 
     }
 
@@ -54,16 +67,17 @@ public class GameMap extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            ArrayList<Position> positions = new ArrayList<>();
-            ChessMen chessMen = table[e.getY()/70][e.getX()/70];
-            positions = chessMen.calculatingMoves();
-            for(  int i=0 ; i< positions.size(); i++){
-                System.out.println(cells.get(positions.get(i).getRow()*9 + positions.get(i).getCol()).getPosition().getCol());
-                int n = positions.get(i).getCol()*9 + positions.get(i).getRow();
-              Cell c =  cells.get(n);
-                c.setBackground(c.getCorrectColor());
-            }
+             if( chessManMover==null) {
+                 if (table[e.getY() / 70][e.getX() / 70] != null )
+                     this.showAvailableMoves(e);
+             }
+            else {
+                 this.ChessManMove(e);
+
+             }
+
         }
+
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -86,6 +100,49 @@ public class GameMap extends JPanel {
 
         @Override
         public void mouseExited(MouseEvent e) {
+
+        }
+        private void showAvailableMoves( MouseEvent e){
+            {
+                ArrayList<Position> positions = new ArrayList<>();
+                ChessMen chessMen = table[e.getY()/70][e.getX()/70];
+                chessManMover = chessMen;
+                positions = chessMen.calculatingMoves();
+                for(  int i=0 ; i< positions.size(); i++){
+                    int n = positions.get(i).getRow()*9 + positions.get(i).getCol();
+                    Cell c =  cells.get(n);
+                    c.setBackground(c.getCorrectColor());
+                }
+            }
+
+        }
+        private void ChessManMove( MouseEvent e){
+            System.out.println("Here1");
+            int flag =0;
+            int n = e.getY()/70*9 + e.getX()/70;
+           Cell c =cells.get(n);
+
+            for ( int i =0 ; i<chessManMover.calculatingMoves().size();i++){
+                if( chessManMover.calculatingMoves().get(i).getCol()==c.getPosition().getCol() && chessManMover.calculatingMoves().get(i).getRow()== c.getPosition().getRow()){
+                    flag =1;
+                    break;
+                }
+
+            }
+            if(flag==1) {
+                table[e.getY()/70][e.getX()/70] = chessManMover ;
+                c.addChessMan(chessManMover);
+                n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
+                c = cells.get(n);
+                c.remove(chessManMover);
+                chessManMover.setPosition(new Position(e.getY()/70,e.getX()/70));
+
+                flag =0;
+            }
+
+            chessManMover=null;
+
+
 
         }
     }

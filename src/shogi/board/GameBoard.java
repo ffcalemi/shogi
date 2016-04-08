@@ -97,9 +97,9 @@ public class GameBoard implements Cloneable {
 	 */
 	public boolean canGo(ChessMen chessMen, Position position) {
 		System.out.println(position);
-		if (table[position.getRow()][position.getCol()] == null && position.isAvailable())
+		if ( position.isAvailable() && table[position.getRow()][position.getCol()] == null )
 			return true;
-		else if ((table[position.getRow()][position.getCol()].getPlayerRole() != chessMen.getPlayerRole()) && position.isAvailable())
+		else if (position.isAvailable() && (table[position.getRow()][position.getCol()].getPlayerRole() != chessMen.getPlayerRole()) )
 			return true;
 		else
 			return false;

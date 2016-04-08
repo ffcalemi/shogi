@@ -14,7 +14,6 @@ public class Lance extends ChessMen {
 		super.position = pos;
 		super.setPlayerRole(role);
 		super.gameBoard = gameBoard;
-		super.setNormal(true);
 	}
 
 	@Override
