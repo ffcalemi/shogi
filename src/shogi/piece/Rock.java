@@ -30,6 +30,8 @@ public class Rock extends ChessMen {
 		pos = new Position(this.getPosition().getCol(), this.getPosition().getRow() + 1);
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
+			if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+				break;
 			pos = new Position(pos.getCol(), pos.getRow() + 1);
 		}
 
@@ -37,6 +39,8 @@ public class Rock extends ChessMen {
 		pos = new Position(this.getPosition().getCol(), this.getPosition().getRow() - 1);
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
+			if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+				break;
 			pos = new Position(pos.getCol(), pos.getRow() - 1);
 		}
 
@@ -44,6 +48,8 @@ public class Rock extends ChessMen {
 		pos = new Position(this.getPosition().getCol() - 1, this.getPosition().getRow());
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
+			if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+				break;
 			pos = new Position(pos.getCol() - 1, pos.getRow());
 		}
 
@@ -51,6 +57,8 @@ public class Rock extends ChessMen {
 		pos = new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1);
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
+			if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+				break;
 			pos = new Position(pos.getCol() - 1, pos.getRow());
 		}
 		if (!getNormal()) {
