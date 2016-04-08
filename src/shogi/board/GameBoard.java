@@ -11,13 +11,24 @@ public class GameBoard {
 	private ChessMen[][] table;
 	private ArrayList<ChessMen> whiteKickedPieces;
 	private ArrayList<ChessMen> blackKickedPieces;
-
+	private boolean isWhiteChecked;
+	private boolean isBlackChecked;
 
 	public GameBoard() {
 		this.table = new ChessMen[9][9];
 		whiteKickedPieces = new ArrayList<>();
 		blackKickedPieces = new ArrayList<>();
+		isWhiteChecked = false;
+		isBlackChecked = false;
 		putPieces();
+	}
+
+	public boolean getWhiteCheckStatus(){
+		return isWhiteChecked;
+	}
+
+	public boolean getBlackCheckStatus(){
+		return isBlackChecked;
 	}
 
 	private void putPieces(){
@@ -114,5 +125,39 @@ public class GameBoard {
 		}
 	}
 
+	public boolean isPlayerChecked(ChessMen.roles role){
+		boolean isChecked = false;
+
+		Position posOfCheckedKing = new Position(-1 , -1);
+		//  Finding the position of the king of the player with the role role
+		for (int i = 0; i < 9 * 9; i++) {
+			if (table[i / 9][i % 9] != null){
+				if (table[i / 9][i % 9] instanceof King){
+					if (table[i / 9][i % 9].getPlayerRole() == role){
+						posOfCheckedKing = new Position(i / 9,i%9);
+						break;
+					}
+				}
+			}
+		}
+
+		if ((posOfCheckedKing.getCol() == -1) && (posOfCheckedKing.getRow() == -1)){
+			System.err.println("No king is existed in the board :D");
+			System.exit(-1);
+		}
+
+		for (int i = 0; i < 9 * 9; i++) {
+			if (table[i / 9][i % 9] != null){
+				if (table[i / 9][i % 9].getPlayerRole() != role){
+					if (table[i / 9][i % 9].calculatingMoves().indexOf(posOfCheckedKing) != -1){    // The piece can kick the king and it means it is checked
+						isChecked = true;
+						break;
+					}
+				}
+			}
+		}
+
+		return isChecked;
+	}
 
 }
