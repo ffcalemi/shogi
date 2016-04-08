@@ -1,6 +1,5 @@
 package shogi.gui;
 
-import apple.laf.JRSUIConstants;
 import shogi.piece.ChessMen;
 
 import javax.swing.*;

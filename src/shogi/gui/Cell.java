@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author sina
@@ -86,6 +87,7 @@ public class Cell  extends  JPanel  {
         }
         repaint();
     }
+
 
     public void paint(Graphics g) {
         super.paint(g);
@@ -168,6 +170,5 @@ public class Cell  extends  JPanel  {
         table[this.getPosition().getRow()][this.getPosition().getCol()] = chessMen;
         this.repaint();
     }
-
 
 }
