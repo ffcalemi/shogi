@@ -17,6 +17,9 @@ public abstract class ChessMen {
 
 	private roles playerRole;
 
+	public ChessMen(){
+		isNormal = true;
+	}
 	public abstract ArrayList<Position> calculatingMoves();
 
 	public Position getPosition() {
