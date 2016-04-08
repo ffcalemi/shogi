@@ -123,6 +123,18 @@ public class GameBoard implements Cloneable {
 		isWhiteTurn = !isWhiteTurn;
 	}
 
+	public boolean canSelect(Position selectedPos){
+		if (table[selectedPos.getRow()][selectedPos.getRow()] == null)
+			return false;
+
+		if ((table[selectedPos.getRow()][selectedPos.getRow()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE) && (isWhiteTurn == false))
+			return true;
+		if ((table[selectedPos.getRow()][selectedPos.getRow()].getPlayerRole() == ChessMen.roles.PLAYER_WHITE_ROLE) && (isWhiteTurn == true))
+			return true;
+
+		return false;
+	}
+
 	public ChessMen.roles getTurn(){
 		if (isWhiteTurn)
 			return ChessMen.roles.PLAYER_WHITE_ROLE;
