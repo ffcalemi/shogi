@@ -14,6 +14,7 @@ public class GameBoard implements Cloneable {
 	private ArrayList<ChessMen> blackKickedPieces;
 	private boolean isWhiteChecked;
 	private boolean isBlackChecked;
+	private boolean isWhiteTurn;
 
 	public GameBoard() {
 		this.table = new ChessMen[9][9];
@@ -21,6 +22,7 @@ public class GameBoard implements Cloneable {
 		blackKickedPieces = new ArrayList<>();
 		isWhiteChecked = false;
 		isBlackChecked = false;
+		isWhiteTurn = false;
 		putPieces();
 	}
 
@@ -108,7 +110,14 @@ public class GameBoard implements Cloneable {
 	}
 
 	public void move(Position source, Position target){
+		isWhiteTurn = !isWhiteTurn;
+	}
 
+	public ChessMen.roles getTurn(){
+		if (isWhiteTurn)
+			return ChessMen.roles.PLAYER_WHITE_ROLE;
+		else
+			return ChessMen.roles.PLAYER_BLACK_ROLE;
 	}
 
 	public boolean canMove(Position source, Position target) {
@@ -199,6 +208,7 @@ public class GameBoard implements Cloneable {
 		cloned.whiteKickedPieces = (ArrayList<ChessMen>) this.whiteKickedPieces.clone();
 		cloned.isBlackChecked = this.isBlackChecked;
 		cloned.isWhiteChecked = this.isWhiteChecked;
+		cloned.isWhiteTurn = this.isWhiteTurn;
 
 		return cloned;
 	}
