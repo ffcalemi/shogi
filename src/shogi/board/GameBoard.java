@@ -122,7 +122,7 @@ public class GameBoard implements Cloneable {
 		isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
 		isWhiteTurn = !isWhiteTurn;
 	}
-
+	
 	public boolean canSelect(Position selectedPos){
 		if (table[selectedPos.getRow()][selectedPos.getRow()] == null)
 			return false;
