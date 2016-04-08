@@ -110,6 +110,16 @@ public class GameBoard implements Cloneable {
 	}
 
 	public void move(Position source, Position target){
+		if (table[target.getRow()][target.getCol()] != null) {    //  A piece shoud be kicked
+			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
+				blackKickedPieces.add(table[target.getRow()][target.getCol()]);
+			else
+				whiteKickedPieces.add(table[target.getRow()][target.getCol()]);
+		}
+
+		table[target.getRow()][target.getCol()] = table[source.getRow()][source.getCol()];
+		table[source.getRow()][source.getCol()] = null;
+		isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
 		isWhiteTurn = !isWhiteTurn;
 	}
 
@@ -126,6 +136,8 @@ public class GameBoard implements Cloneable {
 		if (!target.isAvailable())
 			return false;
 		if (table[source.getRow()][source.getCol()] == null)
+			return false;
+		if (table[source.getRow()][source.getCol()].getPlayerRole() == table[target.getRow()][target.getCol()].getPlayerRole())
 			return false;
 		if (table[source.getRow()][source.getCol()].calculatingMoves().indexOf(target) == -1)
 			return false;
