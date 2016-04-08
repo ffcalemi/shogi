@@ -1,15 +1,22 @@
 package shogi.board;
 import shogi.piece.*;
 
+import java.util.ArrayList;
+
 /**
  * @author ahmad
  * @version 1.0.0
  */
 public class GameBoard {
-	ChessMen[][] table;
+	private ChessMen[][] table;
+	private ArrayList<ChessMen> whiteKickedPieces;
+	private ArrayList<ChessMen> blackKickedPieces;
+
 
 	public GameBoard() {
 		this.table = new ChessMen[9][9];
+		whiteKickedPieces = new ArrayList<>();
+		blackKickedPieces = new ArrayList<>();
 		putPieces();
 	}
 
@@ -74,6 +81,7 @@ public class GameBoard {
 	 * @return  True if that cell is available and false it it is not.
 	 */
 	public boolean canGo(ChessMen chessMen, Position position){
+		System.out.println(position);
 		if (table[position.getRow()][position.getCol()] == null && position.isAvailable())
 			return true;
 		else if ((table[position.getRow()][position.getCol()].getPlayerRole() != chessMen.getPlayerRole()) && position.isAvailable())
@@ -105,4 +113,6 @@ public class GameBoard {
 			return null;
 		}
 	}
+
+
 }
