@@ -14,6 +14,7 @@ public class Rock extends ChessMen {
 		super.position = pos;
 		super.setPlayerRole(role);
 		super.gameBoard = gameBoard;
+		super.setNormal(false);
 	}
 
 	@Override
@@ -26,35 +27,47 @@ public class Rock extends ChessMen {
 		Position pos;
 
 		//  Move up
-		pos = new Position(this.getPosition().getCol(), this.getPosition().getRow() + 1);
+		pos = new Position(this.getPosition().getRow() + 1, this.getPosition().getCol());
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
-			pos = new Position(pos.getCol(), pos.getRow() + 1);
+			if (gameBoard.getChessMan(pos) != null)
+				if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+					break;
+			pos = new Position(pos.getRow() + 1, pos.getCol());
 		}
 
 		//  Move down
-		pos = new Position(this.getPosition().getCol(), this.getPosition().getRow() - 1);
+		pos = new Position(this.getPosition().getRow() - 1, this.getPosition().getCol());
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
-			pos = new Position(pos.getCol(), pos.getRow() - 1);
+			if (gameBoard.getChessMan(pos) != null)
+				if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+					break;
+			pos = new Position(pos.getRow() - 1, pos.getCol());
 		}
 
 		//  Move left
-		pos = new Position(this.getPosition().getCol() - 1, this.getPosition().getRow());
+		pos = new Position(this.getPosition().getRow(), this.getPosition().getCol() - 1);
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
-			pos = new Position(pos.getCol() - 1, pos.getRow());
+			if (gameBoard.getChessMan(pos) != null)
+				if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+					break;
+			pos = new Position(pos.getRow(), pos.getCol() - 1);
 		}
 
 		//  Move right
-		pos = new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1);
+		pos = new Position(this.getPosition().getRow(), this.getPosition().getCol() + 1);
 		while (gameBoard.canGo(this, pos)) {
 			allowedMoves.add(pos);
-			pos = new Position(pos.getCol() - 1, pos.getRow());
+			if (gameBoard.getChessMan(pos) != null)
+				if (gameBoard.getChessMan(pos).getPlayerRole() != getPlayerRole())
+					break;
+			pos = new Position(pos.getRow(), pos.getCol() + 1);
 		}
 		if (!getNormal()) {
-			if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() - 1)))
-				allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() - 1));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - 1, this.getPosition().getRow() - 1)))
+				allowedMoves.add(new Position(this.getPosition().getRow() - 1, this.getPosition().getRow() - 1));
 			if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1)))
 				allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1));
 			if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() + 1)))
