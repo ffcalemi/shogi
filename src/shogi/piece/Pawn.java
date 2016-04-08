@@ -14,6 +14,7 @@ public class Pawn extends ChessMen {
 		super.position = pos;
 		super.setPlayerRole(role);
 		super.gameBoard = gameBoard;
+		this.setNormal(true);
 	}
 	@Override
 	public ArrayList<Position> calculatingMoves(){
@@ -54,8 +55,8 @@ public class Pawn extends ChessMen {
 				if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow()+1)))
 					allowedMoves.add(new Position(this.getPosition().getCol(), this.getPosition().getRow()+1));
 			}
-			if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow()-1)))
-				allowedMoves.add(new Position(this.getPosition().getCol(), this.getPosition().getRow()-1));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getRow()-1, this.getPosition().getCol())))
+				allowedMoves.add(new Position(this.getPosition().getRow()-1, this.getPosition().getCol()));
 		}
 		return allowedMoves;
 	}
