@@ -25,7 +25,7 @@ public class Knight extends ChessMen {
 		ArrayList<Position> allowedMoves = new ArrayList<>();
 		if (getNormal()) {
 			if (getPlayerRole() == roles.PLAYER_BLACK_ROLE) {
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() + 2)))
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + 2,this.getPosition().getCol() + 1)))
 					allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() + 2));
 				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 2)))
 					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 2));
