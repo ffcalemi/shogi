@@ -74,9 +74,7 @@ public class GameMap extends JPanel {
             if (chessManMover == null) {
                 if (table[e.getY() / 70][e.getX() / 70] != null)
                     this.showAvailableMoves(e);
-                System.out.println("fdjfafkdjads;lf");
             } else {
-                System.out.println("here12344556");
                 this.chessManMove(e);
 
             }
@@ -162,9 +160,7 @@ public class GameMap extends JPanel {
             int n = e.getY() / 70 * 9 + e.getX() / 70;
             Cell c = cells.get(n);
             if ( gameBoard.canMove( chessManMover.getPosition(), new Position(e.getY()/70, e.getX()/70))){
-                System.out.println("here132");
                 gameBoard.move(chessManMover.getPosition(), new Position(e.getY()/70, e.getX()/70));
-                System.out.println(gameBoard);
                 c.addChessMan(chessManMover);
 
                 n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();

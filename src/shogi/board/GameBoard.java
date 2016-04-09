@@ -112,9 +112,7 @@ public class GameBoard implements Cloneable {
 	}
 
 	public void move(Position source, Position target){
-		System.out.println("Null is here!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println(table[target.getRow()][target.getCol()]);
-		System.out.println("Null is here!!!!!!!!!!!!!!!!!!!!!!");
 		if (table[target.getRow()][target.getCol()] != null) {    //  A piece shoud be kicked
 			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
 				blackKickedPieces.add(table[target.getRow()][target.getCol()]);
@@ -124,10 +122,6 @@ public class GameBoard implements Cloneable {
 
 		table[target.getRow()][target.getCol()] = (ChessMen) table[source.getRow()][source.getCol()].clone();
 		table[source.getRow()][source.getCol()] = null;
-		System.out.println("----------------------");
-		System.out.println(table[target.getRow()][target.getCol()]);
-		System.out.println(table[source.getRow()][source.getCol()]);
-		System.out.println("----------------------");
 		isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
 
 		isWhiteTurn = !isWhiteTurn;
@@ -173,7 +167,7 @@ public class GameBoard implements Cloneable {
 			return false;
 		GameBoard gameBoard = this.clone();
 		gameBoard.move(source,target);
-		if (gameBoard.isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole()))
+		if (gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole()))
 			return false;
 		return true;
 	}
@@ -222,7 +216,13 @@ public class GameBoard implements Cloneable {
 		for (int i = 0; i < 9 * 9; i++) {
 			if (table[i / 9][i % 9] != null) {
 				if (table[i / 9][i % 9].getPlayerRole() != role) {
-					if (table[i / 9][i % 9].calculatingMoves().indexOf(posOfCheckedKing) != -1) {    // The piece can kick the king and it means it is checked
+					int index = -1;
+					for (int j = 0; j < table[i / 9][i % 9].calculatingMoves().size(); j++) {
+						if ((table[i / 9][i % 9].calculatingMoves().get(j).getRow() == posOfCheckedKing.getRow()) &&
+								(table[i / 9][i % 9].calculatingMoves().get(j).getCol() == posOfCheckedKing.getCol()))
+							index = j;
+					}
+					if (index != -1) {    // The piece can kick the king and it means it is checked
 						isChecked = true;
 						break;
 					}
@@ -278,4 +278,19 @@ public class GameBoard implements Cloneable {
 		return cloned;
 	}
 
+	@Override
+	public String toString() {
+		String result = new String();
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (table[i][j] == null)
+					result += "  ";
+				else
+					result += table[i][j];
+			}
+			result += "\n";
+		}
+
+		return result;
+	}
 }

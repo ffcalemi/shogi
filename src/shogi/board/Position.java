@@ -1,12 +1,11 @@
 package shogi.board;
 
-import javafx.geometry.Pos;
 
 /**
  * @author ahmad
  * @version 1.0.0
  */
-public class Position implements Comparable{
+public class Position implements Comparable {
 
 	public int MAX_COL_NUM = 9;
 	public int MAX_ROW_NUM = 9;
@@ -56,4 +55,14 @@ public class Position implements Comparable{
 		this.row = row;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Position) {
+			Position pos = (Position)o;
+			if ((pos.getCol() == getCol()) && (pos.getRow() == getRow()))
+				return true;
+			else
+				return false;
+		} else return false;
+	}
 }
