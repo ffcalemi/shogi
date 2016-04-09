@@ -135,4 +135,11 @@ public class Bishop extends ChessMen{
 	public String toString() {
 		return "Bi";
 	}
+
+	@Override
+	public Object clone(){
+		ChessMen chessMen = new Bishop(super.position,getPlayerRole(),gameBoard);
+		chessMen.setNormal(getNormal());
+		return chessMen;
+	}
 }

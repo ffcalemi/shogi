@@ -112,6 +112,9 @@ public class GameBoard implements Cloneable {
 	}
 
 	public void move(Position source, Position target){
+		System.out.println("Null is here!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(table[target.getRow()][target.getCol()]);
+		System.out.println("Null is here!!!!!!!!!!!!!!!!!!!!!!");
 		if (table[target.getRow()][target.getCol()] != null) {    //  A piece shoud be kicked
 			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
 				blackKickedPieces.add(table[target.getRow()][target.getCol()]);
@@ -119,9 +122,14 @@ public class GameBoard implements Cloneable {
 				whiteKickedPieces.add(table[target.getRow()][target.getCol()]);
 		}
 
-		table[target.getRow()][target.getCol()] = table[source.getRow()][source.getCol()];
+		table[target.getRow()][target.getCol()] = (ChessMen) table[source.getRow()][source.getCol()].clone();
 		table[source.getRow()][source.getCol()] = null;
+		System.out.println("----------------------");
+		System.out.println(table[target.getRow()][target.getCol()]);
+		System.out.println(table[source.getRow()][source.getCol()]);
+		System.out.println("----------------------");
 		isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
+
 		isWhiteTurn = !isWhiteTurn;
 	}
 
@@ -152,14 +160,20 @@ public class GameBoard implements Cloneable {
 		if (table[source.getRow()][source.getCol()] == null)
 			return false;
 		if (table[target.getRow()][target.getCol()] != null)
+
 			if (table[source.getRow()][source.getCol()].getPlayerRole() == table[target.getRow()][target.getCol()].getPlayerRole())
 				return false;
-		
-		if (table[source.getRow()][source.getCol()].calculatingMoves().indexOf(target) == -1)
+		int index = -1;
+		for (int i = 0; i < table[source.getRow()][source.getCol()].calculatingMoves().size(); i++) {
+			if ((table[source.getRow()][source.getCol()].calculatingMoves().get(i).getCol() == target.getCol()) &&
+					(table[source.getRow()][source.getCol()].calculatingMoves().get(i).getRow() == target.getRow()))
+				index = i;
+		}
+		if (index == -1)
 			return false;
 		GameBoard gameBoard = this.clone();
 		gameBoard.move(source,target);
-		if (gameBoard.isPlayerChecked(table[source.getRow()][source.getCol()].getPlayerRole()))
+		if (gameBoard.isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole()))
 			return false;
 		return true;
 	}
@@ -231,7 +245,30 @@ public class GameBoard implements Cloneable {
 			e.printStackTrace();
 		}
 		GameBoard cloned = new GameBoard();
-		cloned.table = this.table.clone();
+		//	Cloning array
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (this.table[i][j] != null){
+					if (this.table[i][j] instanceof Pawn)
+						cloned.table[i][j] = new Pawn(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+					else if (this.table[i][j] instanceof Rock)
+						cloned.table[i][j] = new Rock(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+					else if (this.table[i][j] instanceof SilverGeneral)
+						cloned.table[i][j] = new SilverGeneral(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+					else if (this.table[i][j] instanceof Lance)
+						cloned.table[i][j] = new Lance(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+					else if (this.table[i][j] instanceof Knight)
+						cloned.table[i][j] = new Knight(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+					else if (this.table[i][j] instanceof King)
+						cloned.table[i][j] = new King(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+					else if (this.table[i][j] instanceof GoldGeneral)
+						cloned.table[i][j] = new GoldGeneral(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+					else if (this.table[i][j] instanceof Bishop)
+						cloned.table[i][j] = new Bishop(table[i][j].getPosition(),table[i][j].getPlayerRole(),this);
+				}else
+					cloned.table[i][j] = null;
+			}
+		}
 		cloned.blackKickedPieces = (ArrayList<ChessMen>) this.blackKickedPieces.clone();
 		cloned.whiteKickedPieces = (ArrayList<ChessMen>) this.whiteKickedPieces.clone();
 		cloned.isBlackChecked = this.isBlackChecked;

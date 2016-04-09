@@ -82,4 +82,10 @@ public class Rock extends ChessMen {
 	public String toString() {
 		return "Ro";
 	}
+	@Override
+	public Object clone(){
+		ChessMen chessMen = new Rock(super.position,getPlayerRole(),gameBoard);
+		chessMen.setNormal(getNormal());
+		return chessMen;
+	}
 }

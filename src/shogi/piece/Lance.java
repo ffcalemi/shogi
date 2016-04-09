@@ -72,4 +72,10 @@ public class Lance extends ChessMen {
 	public String toString() {
 		return "La";
 	}
+	@Override
+	public Object clone(){
+		ChessMen chessMen = new Lance(super.position,getPlayerRole(),gameBoard);
+		chessMen.setNormal(getNormal());
+		return chessMen;
+	}
 }

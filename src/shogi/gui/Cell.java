@@ -79,11 +79,11 @@ public class Cell  extends  JPanel  {
         this.setSize(70,70);
         if((position.getRow()+position.getCol())%2 ==0){
 
-               this.setBackground(new Color(139,69,19));
+               this.setBackground(this.evenBackground);
          //   this.set
         }
         else {
-           this.setBackground(new Color(210,180,140));
+           this.setBackground(this.oddBackgrand);
         }
         repaint();
     }
@@ -91,16 +91,7 @@ public class Cell  extends  JPanel  {
 
     public void paint(Graphics g) {
         super.paint(g);
-//        if((position.getRow()+position.getCol())%2 ==0){
-//            g.setColor(new Color(139,69,19));
-//        }
-//        else {
-//            g.setColor(new Color(210,180,140));
-//        }
-        this.setLocation(this.position.getCol()*this.width, (this.position.getRow()*this.width));
-//        this.setSize(this.width, this.width);
-//      //  g.fillRoundRect(0,0,this.width,this.width,4 ,4);
-        if( table[position.getRow()][position.getCol()]!=null) {
+ if( table[position.getRow()][position.getCol()]!=null) {
 
             if(table[position.getRow()][position.getCol()].getPlayerRole()== ChessMen.roles.PLAYER_WHITE_ROLE ){
                 g.setColor(Color.white);
@@ -154,20 +145,16 @@ public class Cell  extends  JPanel  {
 
 
                 }
-           // g.fillOval(13, 13, this.width / 2, this.width / 2);
         }
 
-
-      //  this.setLocation(this.position.getRow()*this.width+35, (this.position.getCol()*this.width+35));
-//        g.fillRoundRect(35,35,this.width,this.width);
-    }
+}
     protected void remove(ChessMen chessMen){
-        table[chessMen.getPosition().getRow()][chessMen.getPosition().getCol()]=null;
+     //   table[chessMen.getPosition().getRow()][chessMen.getPosition().getCol()]=null;
        this.repaint();
 
     }
     protected void addChessMan(ChessMen chessMen ){
-        table[this.getPosition().getRow()][this.getPosition().getCol()] = chessMen;
+       // table[this.getPosition().getRow()][this.getPosition().getCol()] = chessMen;
         this.repaint();
     }
 

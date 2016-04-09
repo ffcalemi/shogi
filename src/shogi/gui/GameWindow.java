@@ -21,10 +21,11 @@ public class GameWindow extends Window {//TODO  parivate Menu menu;
     public GameWindow() {
         super();
         this.setLayout(null);
-        this.add(gameMap = new GameMap(new GameBoard()));
         this.setTitle("NEW GAME ");
-        whitePlayerList = new IncomingChessMen(IncomingChessMen.roles.PLAYER_BLACK);
-        blackPlayerList = new IncomingChessMen(IncomingChessMen.roles.PLAYER_WHITE);
+        blackPlayerList = new IncomingChessMen(IncomingChessMen.roles.PLAYER_BLACK);
+        whitePlayerList = new IncomingChessMen(IncomingChessMen.roles.PLAYER_WHITE);
+        this.add(gameMap = new GameMap(new GameBoard(), whitePlayerList , blackPlayerList));
+
         this.add(blackPlayerList);
         this.add(whitePlayerList);
         this.add(gameMap);

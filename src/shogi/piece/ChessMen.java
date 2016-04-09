@@ -9,20 +9,20 @@ import java.util.ArrayList;
  * @author sina
  * @version 1.0.0
  */
-public abstract class ChessMen {
+public abstract class ChessMen implements Cloneable{
 
 	private boolean isNormal;
+	protected GameBoard gameBoard;
+	protected Position position;
+	private roles playerRole;
 
 	public void setPosition(Position position) {
 		this.position = position;
 	}
-
-	protected GameBoard gameBoard;
-	protected Position position;
-
-	private roles playerRole;
-
 	public abstract ArrayList<Position> calculatingMoves();
+
+	@Override
+	public abstract Object clone();
 
 	public Position getPosition() {
 		return position;
@@ -48,4 +48,51 @@ public abstract class ChessMen {
 	}
 
 	public abstract String toString();
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

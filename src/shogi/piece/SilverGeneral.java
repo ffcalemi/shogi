@@ -140,4 +140,11 @@ public class SilverGeneral extends ChessMen {
 	public String toString() {
 		return "SG";
 	}
+
+	@Override
+	public Object clone(){
+		ChessMen chessMen = new SilverGeneral(super.position,getPlayerRole(),gameBoard);
+		chessMen.setNormal(getNormal());
+		return chessMen;
+	}
 }

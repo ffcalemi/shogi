@@ -51,4 +51,10 @@ public class King extends ChessMen{
 	public String toString() {
 		return "Ki";
 	}
+	@Override
+	public Object clone(){
+		ChessMen chessMen = new King(super.position,getPlayerRole(),gameBoard);
+		chessMen.setNormal(getNormal());
+		return chessMen;
+	}
 }

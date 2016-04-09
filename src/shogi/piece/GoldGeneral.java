@@ -89,4 +89,11 @@ public class GoldGeneral extends ChessMen {
 	public String toString() {
 		return "GG";
 	}
+
+	@Override
+	public Object clone(){
+		ChessMen chessMen = new GoldGeneral(super.position,getPlayerRole(),gameBoard);
+		chessMen.setNormal(getNormal());
+		return chessMen;
+	}
 }

@@ -75,4 +75,10 @@ public class Pawn extends ChessMen {
 	public String toString() {
 		return "Pa";
 	}
+	@Override
+	public Object clone(){
+		ChessMen chessMen = new Pawn(super.position,getPlayerRole(),gameBoard);
+		chessMen.setNormal(getNormal());
+		return chessMen;
+	}
 }

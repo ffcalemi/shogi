@@ -1,10 +1,12 @@
 package shogi.board;
 
+import javafx.geometry.Pos;
+
 /**
  * @author ahmad
  * @version 1.0.0
  */
-public class Position {
+public class Position implements Comparable{
 
 	public int MAX_COL_NUM = 9;
 	public int MAX_ROW_NUM = 9;
@@ -25,6 +27,19 @@ public class Position {
 			return false;
 	}
 
+	@Override
+	public int compareTo(Object o) {
+		if (o instanceof Position){
+			Position pos = (Position)o;
+			if ((this.getCol() == pos.getCol()) && (this.getRow() == pos.getRow()))
+				return 0;
+			else
+				return 1;
+		}else
+			return -1;
+
+	}
+
 	public int getCol() {
 		return col;
 	}
@@ -41,11 +56,4 @@ public class Position {
 		this.row = row;
 	}
 
-	@Override
-	public String toString() {
-		return "Position{" +
-				"col=" + col +
-				", row=" + row +
-				'}';
-	}
 }
