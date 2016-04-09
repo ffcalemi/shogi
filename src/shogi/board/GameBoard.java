@@ -68,6 +68,8 @@ public class GameBoard implements Cloneable {
 		for (int i = 0; i < 9; i++)
 			table[2][i] = new Pawn(new Position(2, i), ChessMen.roles.PLAYER_BLACK_ROLE, this);
 
+		table[4][4] = new Rock(new Position(4, 4), ChessMen.roles.PLAYER_BLACK_ROLE, this);
+
 		//  White pieces putting
 		table[8][0] = new Lance(new Position(8, 0), ChessMen.roles.PLAYER_WHITE_ROLE, this);
 		table[8][1] = new Knight(new Position(8, 1), ChessMen.roles.PLAYER_WHITE_ROLE, this);
@@ -122,7 +124,7 @@ public class GameBoard implements Cloneable {
 		isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
 		isWhiteTurn = !isWhiteTurn;
 	}
-	
+
 	public boolean canSelect(Position selectedPos){
 		if (table[selectedPos.getRow()][selectedPos.getRow()] == null)
 			return false;
@@ -236,4 +238,5 @@ public class GameBoard implements Cloneable {
 
 		return cloned;
 	}
+
 }
