@@ -151,8 +151,10 @@ public class GameBoard implements Cloneable {
 			return false;
 		if (table[source.getRow()][source.getCol()] == null)
 			return false;
-		if (table[source.getRow()][source.getCol()].getPlayerRole() == table[target.getRow()][target.getCol()].getPlayerRole())
-			return false;
+		if (table[target.getRow()][target.getCol()] != null)
+			if (table[source.getRow()][source.getCol()].getPlayerRole() == table[target.getRow()][target.getCol()].getPlayerRole())
+				return false;
+		
 		if (table[source.getRow()][source.getCol()].calculatingMoves().indexOf(target) == -1)
 			return false;
 		GameBoard gameBoard = this.clone();
