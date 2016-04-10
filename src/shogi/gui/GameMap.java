@@ -159,10 +159,11 @@ public class GameMap extends JPanel {
         private void chessManMove( MouseEvent e){
             int n = e.getY() / 70 * 9 + e.getX() / 70;
             Cell c = cells.get(n);
-            if ( gameBoard.canMove( chessManMover.getPosition(), new Position(e.getY()/70, e.getX()/70))){
-                gameBoard.move(chessManMover.getPosition(), new Position(e.getY()/70, e.getX()/70));
+            Position target = new Position(e.getY()/70, e.getX()/70);
+            if ( gameBoard.canMove( chessManMover.getPosition(), target)){
+                gameBoard.move(chessManMover.getPosition(), target);
+                chessManMover.setPosition(target);
                 c.addChessMan(chessManMover);
-
                 n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
                 c = cells.get(n);
                 c.remove(chessManMover);

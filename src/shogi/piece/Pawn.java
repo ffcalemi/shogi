@@ -43,7 +43,6 @@ public class Pawn extends ChessMen {
 
 				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - 1, this.getPosition().getCol()))) {
 					allowedMoves.add(new Position(this.getPosition().getRow() - 1, this.getPosition().getCol()));
-					System.out.println("this");
 				}
 			}
 			if (gameBoard.canGo(this, new Position(this.getPosition().getRow()+1, this.getPosition().getCol())))
