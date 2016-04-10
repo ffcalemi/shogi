@@ -162,11 +162,13 @@ public class GameMap extends JPanel {
             Position target = new Position(e.getY()/70, e.getX()/70);
             if ( gameBoard.canMove( chessManMover.getPosition(), target)){
                 gameBoard.move(chessManMover.getPosition(), target);
-                chessManMover.setPosition(target);
+                //chessManMover.setPosition(target);
                 c.addChessMan(chessManMover);
                 n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
                 c = cells.get(n);
                 c.remove(chessManMover);
+                chessManMover.setPosition(target);
+                
                 chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
 
 

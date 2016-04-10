@@ -98,7 +98,6 @@ public class GameBoard implements Cloneable {
 	 * @return True if that cell is available and false it it is not.
 	 */
 	public boolean canGo(ChessMen chessMen, Position position) {
-		System.out.println(position);
 		if ( position.isAvailable() && table[position.getRow()][position.getCol()] == null )
 			return true;
 		else if (position.isAvailable() && (table[position.getRow()][position.getCol()].getPlayerRole() != chessMen.getPlayerRole()) )
@@ -123,7 +122,7 @@ public class GameBoard implements Cloneable {
 		table[target.getRow()][target.getCol()] = (ChessMen) table[source.getRow()][source.getCol()].clone();
 		table[source.getRow()][source.getCol()] = null;
 		isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
-
+		table[target.getRow()][target.getCol()].setPosition(target);
 		isWhiteTurn = !isWhiteTurn;
 	}
 
@@ -165,10 +164,10 @@ public class GameBoard implements Cloneable {
 		}
 		if (index == -1)
 			return false;
-		GameBoard gameBoard = this.clone();
-		gameBoard.move(source,target);
-		if (gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole()))
-			return false;
+//		GameBoard gameBoard = this.clone();
+//		gameBoard.move(source,target);
+//		if (gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole()))
+//			return false;
 		return true;
 	}
 
