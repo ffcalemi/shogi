@@ -182,10 +182,19 @@ public class GameBoard implements Cloneable {
 		}
 		if (index == -1)
 			return false;
+
 		GameBoard gameBoard = this.clone();
 		gameBoard.move(source,target);
 		if (gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole()))
 			return false;
+		if (isWhiteTurn) {
+			if (isWhiteChecked && (!gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole())))
+				return true;
+		}else{
+			if (isBlackChecked && (!gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole())))
+				return true;
+		}
+
 		return true;
 	}
 
