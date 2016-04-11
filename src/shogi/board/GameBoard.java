@@ -125,7 +125,6 @@ public class GameBoard implements Cloneable {
 		isWhiteTurn = !isWhiteTurn;
 
 	}
-//TODO bug canSelect in yours getCol is getROw
 
 	public boolean canSelect(Position selectedPos){
 		if (table[selectedPos.getRow()][selectedPos.getCol()] == null)
