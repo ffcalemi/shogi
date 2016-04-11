@@ -111,7 +111,6 @@ public class GameBoard implements Cloneable {
 	}
 
 	public void move(Position source, Position target){
-		System.out.println(table[target.getRow()][target.getCol()]);
 		if (table[target.getRow()][target.getCol()] != null) {    //  A piece shoud be kicked
 			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
 				blackKickedPieces.add(table[target.getRow()][target.getCol()]);
@@ -124,19 +123,39 @@ public class GameBoard implements Cloneable {
 		isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
 		table[target.getRow()][target.getCol()].setPosition(target);
 		isWhiteTurn = !isWhiteTurn;
+
 	}
+//TODO bug canSelect in yours getCol is getROw
 
 	public boolean canSelect(Position selectedPos){
-		if (table[selectedPos.getRow()][selectedPos.getRow()] == null)
+		if (table[selectedPos.getRow()][selectedPos.getCol()] == null)
 			return false;
 
-		if ((table[selectedPos.getRow()][selectedPos.getRow()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE) && (isWhiteTurn == false))
+		if ((table[selectedPos.getRow()][selectedPos.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE) && (isWhiteTurn == false))
 			return true;
-		if ((table[selectedPos.getRow()][selectedPos.getRow()].getPlayerRole() == ChessMen.roles.PLAYER_WHITE_ROLE) && (isWhiteTurn == true))
+		if ((table[selectedPos.getRow()][selectedPos.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_WHITE_ROLE) && (isWhiteTurn == true))
 			return true;
 
 		return false;
 	}
+//	public void adder(Position source , Position target){
+//		if (table[target.getRow()][target.getCol()] != null) {    //  A piece shoud be kicked
+//			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
+//				blackKickedPieces.add(table[target.getRow()][target.getCol()]);
+//			else
+//				whiteKickedPieces.add(table[target.getRow()][target.getCol()]);
+//		}
+//
+//		table[target.getRow()][target.getCol()] = (ChessMen) table[source.getRow()][source.getCol()].clone();
+////
+//	}
+//	public void remover( Position source){
+//		table[source.getRow()][source.getCol()] = null;
+//	//	isPlayerChecked(table[target.getRow()][target.getCol()].getPlayerRole());
+//
+//		isWhiteTurn = !isWhiteTurn;
+//
+//	}
 
 	public ChessMen.roles getTurn(){
 		if (isWhiteTurn)
@@ -164,10 +183,10 @@ public class GameBoard implements Cloneable {
 		}
 		if (index == -1)
 			return false;
-//		GameBoard gameBoard = this.clone();
-//		gameBoard.move(source,target);
-//		if (gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole()))
-//			return false;
+		GameBoard gameBoard = this.clone();
+		gameBoard.move(source,target);
+		if (gameBoard.isPlayerChecked(gameBoard.getTable()[target.getRow()][target.getCol()].getPlayerRole()))
+			return false;
 		return true;
 	}
 
