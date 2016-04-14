@@ -32,7 +32,7 @@ public class Lance extends ChessMen {
 			else
 				step = -1;
 			//  Move up
-			pos = new Position(this.getPosition().getCol(), this.getPosition().getRow() + step);
+			pos = new Position(this.getPosition().getRow() + step,this.getPosition().getCol());
 			while (gameBoard.canGo(this, pos)) {
 				allowedMoves.add(pos);
 				pos = new Position(pos.getCol(), pos.getRow() + step);
