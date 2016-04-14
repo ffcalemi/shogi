@@ -1,5 +1,6 @@
 package shogi.gui;
 
+import com.sun.deploy.util.BlackList;
 import shogi.board.GameBoard;
 import shogi.board.Position;
 import shogi.piece.ChessMen;
@@ -12,7 +13,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.TimerTask;
 
 /**
  * @author sina
@@ -20,6 +20,10 @@ import java.util.TimerTask;
  *          Created by sina on 4/5/16.
  */
 public class GameMap extends JPanel {
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
     private GameBoard gameBoard;
     private ChessMen[][] table = new ChessMen[9][9];
     private ArrayList<Cell> cells = new ArrayList<>();
@@ -27,7 +31,6 @@ public class GameMap extends JPanel {
     private Position position;
     private IncomingChessMen whiteBase;
     private IncomingChessMen blacBase;
-    //TODO handleing  turns here? or in gameBoard?
 
     Border bevelBorder = BorderFactory.createRaisedBevelBorder();
     Border lineBorder = LineBorder.createBlackLineBorder();
@@ -45,9 +48,7 @@ public class GameMap extends JPanel {
         gameBoard = gm;
         this.setLocation((1000 - 640) / 2, 200);
         this.table = gameBoard.getTable();
-        gameBoard = new GameBoard();
-        table = gameBoard.getTable();
-        this.addMouseListener(new myMouselistener());
+        this.addMouseListener(new myMouselistener(this));
         this.mapInitializer();
 
 
@@ -68,14 +69,30 @@ public class GameMap extends JPanel {
     }
 
     class myMouselistener implements MouseListener {
+        private boolean canMove = false;
+        private  GameMap gameMap;
+        public myMouselistener( GameMap gameMap){
+            this.gameMap = gameMap;
+        }
 
         @Override
+
         public void mouseClicked(MouseEvent e) {
             if (chessManMover == null) {
-                if (table[e.getY() / 70][e.getX() / 70] != null)
-                    this.showAvailableMoves(e);
+                if (table[e.getY() / 70][e.getX() / 70] != null) {
+                    if (gameBoard.canSelect(table[e.getY() / 70][e.getX() / 70].getPosition())) {
+                        this.showAvailableMoves(e);
+                        int n = e.getY() / 70 * 9 + e.getX() / 70;
+                        Cell c = cells.get(n);
+                        c.setBackground(Color.ORANGE);
+                        canMove = true;
+                    }
+                }
             } else {
-                this.chessManMove(e);
+                if (canMove) {
+                    this.ChessManMove(e);
+                    canMove = false;
+                }
 
             }
 
@@ -111,8 +128,8 @@ public class GameMap extends JPanel {
                 ArrayList<Position> positions = new ArrayList<>();
                 ChessMen chessMen = table[e.getY() / 70][e.getX() / 70];
                 chessManMover = chessMen;
-                if( chessMen.getPlayerRole() == gameBoard.getTurn())
-                positions = chessMen.calculatingMoves();
+                if (chessMen.getPlayerRole() == gameBoard.getTurn())
+                    positions = chessMen.calculatingMoves();
                 for (int i = 0; i < positions.size(); i++) {
                     int n = positions.get(i).getRow() * 9 + positions.get(i).getCol();
                     Cell c = cells.get(n);
@@ -122,72 +139,64 @@ public class GameMap extends JPanel {
 
         }
 
-//        private void ChessManMove(MouseEvent e) {
-//            System.out.println("Here1");
-//            int flag = 0;
-//              int n = e.getY() / 70 * 9 + e.getX() / 70;
-//              Cell c = cells.get(n);
-////
-//            for (int i = 0; i < chessManMover.calculatingMoves().size(); i++) {
-//                if (chessManMover.calculatingMoves().get(i).getCol() == c.getPosition().getCol() && chessManMover.calculatingMoves().get(i).getRow() == c.getPosition().getRow()) {
-//                    flag = 1;
-//                    break;
-//                }
-//
-//            }
-//            if (flag == 1) {
-//                ChessMen tempChessMan = table[e.getY() / 70][e.getX() / 70];
-//                if (tempChessMan != null) {
-//                    if (tempChessMan.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
-//                        whiteBase.push(tempChessMan);
-//                    else blacBase.push(tempChessMan);
-//                }
-//                table[e.getY() / 70][e.getX() / 70] = chessManMover;
-//                c.addChessMan(chessManMover);
-//                n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
-//                c = cells.get(n);
-//                c.remove(chessManMover);
-//                chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
-//
-//                flag = 0;
-//            }
-//
-//            chessManMover = null;
-//
-//
-//        }
-        private void chessManMove( MouseEvent e){
+        private void ChessManMove(MouseEvent e) {
+            System.out.println("Here1");
+            int flag = 0;
             int n = e.getY() / 70 * 9 + e.getX() / 70;
             Cell c = cells.get(n);
-            Position target = new Position(e.getY()/70, e.getX()/70);
-            if ( gameBoard.canMove( chessManMover.getPosition(), target)){
-                gameBoard.move(chessManMover.getPosition(), target);
-                //chessManMover.setPosition(target);
+//
+            for (int i = 0; i < chessManMover.calculatingMoves().size(); i++) {
+                if (chessManMover.calculatingMoves().get(i).getCol() == c.getPosition().getCol() && chessManMover.calculatingMoves().get(i).getRow() == c.getPosition().getRow()) {
+                    flag = 1;
+                    break;
+                }
+
+            }
+            if (flag == 1) {
+                ChessMen tempChessMan = table[e.getY() / 70][e.getX() / 70];
+                if (tempChessMan != null) {
+                    if (tempChessMan.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
+                        whiteBase.push(tempChessMan);
+                    else blacBase.push(tempChessMan);
+                }
+                table[e.getY() / 70][e.getX() / 70] = chessManMover;
                 c.addChessMan(chessManMover);
                 n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
                 c = cells.get(n);
                 c.remove(chessManMover);
-                chessManMover.setPosition(target);
-                
                 chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
 
-
+                flag = 0;
             }
+
             chessManMover = null;
+
 
         }
     }
-//    private void ChessmenInitializer(){
-//        for (int r =0 ; r<9 ; r++){
-//            for ( int c = 0 ; c<9 ; c++){
-//                if(table[r][c] != null){
-//                    this.add(new ChessMan(gameBoard , new Position(r,c)));
-//                }
+//        private void chessManMove( MouseEvent e){
+//            int n = e.getY() / 70 * 9 + e.getX() / 70;
+//            Cell c = cells.get(n);
+//            Position target = new Position(e.getY()/70, e.getX()/70);
+//
+//
+//            if ( gameBoard.canMove( chessManMover.getPosition(), target)){
+//                gameBoard.move(chessManMover.getPosition(), target);
+//               // chessManMover.setPosition(target);
+//                //TODO handle kicking the enemie's chessman
+//                c.addChessMan(chessManMover);
+//                n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
+//                c = cells.get(n);
+//                c.remove(chessManMover);
+//               // chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
+//
+//
 //            }
+//            chessManMover = null;
 //
 //        }
-//
 //    }
-
+//    1. handleing "kish" in calculating canGO ( for showing green places)
+    // 2. bad az kish shodan ...
 
 }
