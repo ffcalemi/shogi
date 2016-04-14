@@ -112,10 +112,14 @@ public class GameBoard implements Cloneable {
 
 	public void move(Position source, Position target){
 		if (table[target.getRow()][target.getCol()] != null) {    //  A piece shoud be kicked
-			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
+			if (table[target.getRow()][target.getCol()].getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE) {
+				table[target.getRow()][target.getCol()].setPlayerRole(ChessMen.roles.PLAYER_WHITE_ROLE);
 				blackKickedPieces.add(table[target.getRow()][target.getCol()]);
-			else
+			}
+			else {
+				table[target.getRow()][target.getCol()].setPlayerRole(ChessMen.roles.PLAYER_BLACK_ROLE);
 				whiteKickedPieces.add(table[target.getRow()][target.getCol()]);
+			}
 		}
 
 		table[target.getRow()][target.getCol()] = (ChessMen) table[source.getRow()][source.getCol()].clone();
@@ -196,6 +200,14 @@ public class GameBoard implements Cloneable {
 		}
 
 		return true;
+	}
+
+	public ArrayList<ChessMen> getWhiteKickedPieces() {
+		return whiteKickedPieces;
+	}
+
+	public ArrayList<ChessMen> getBlackKickedPieces() {
+		return blackKickedPieces;
 	}
 
 	/**
@@ -304,6 +316,32 @@ public class GameBoard implements Cloneable {
 		return cloned;
 	}
 
+	public ChessMen getWhiteKickedPieceIndex(int index) {
+		return whiteKickedPieces.get(index);
+	}
+	public ChessMen getBlackKickedPieceIndex(int index) {
+		return blackKickedPieces.get(index);
+	}
+	public void setWhiteKickedPieces(ArrayList<ChessMen> whiteKickedPieces) {
+		this.whiteKickedPieces = whiteKickedPieces;
+	}
+
+	public ArrayList<Position> calculatingPuts(ChessMen  ch){
+		ArrayList<Position> res = new ArrayList<>();
+		if ( ch.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE){
+			for (int i = 0; i < 6; i++) {
+				for (int j = 0; j < 9; j++) {
+					if( table[i][j] == null)
+						res.add(new Position(i,j));
+
+
+				}
+
+			}
+		}
+		return  res;
+
+	}
 	@Override
 	public String toString() {
 		String result = new String();

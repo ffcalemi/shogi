@@ -1,6 +1,5 @@
 package shogi.gui;
 
-import com.sun.deploy.util.BlackList;
 import shogi.board.GameBoard;
 import shogi.board.Position;
 import shogi.piece.ChessMen;
@@ -26,7 +25,7 @@ public class GameMap extends JPanel {
 
     private GameBoard gameBoard;
     private ChessMen[][] table = new ChessMen[9][9];
-    private ArrayList<Cell> cells = new ArrayList<>();
+    static ArrayList<Cell> cells = new ArrayList<>();
     private ChessMen chessManMover;
     private Position position;
     private IncomingChessMen whiteBase;
@@ -68,10 +67,21 @@ public class GameMap extends JPanel {
         }
     }
 
+    //TODO
+    public void paintingCells(ArrayList<Position> positions) {
+        for (int i = 0; i < positions.size(); i++) {
+            int n = positions.get(i).getRow() * 9 + positions.get(i).getCol();
+            Cell c = cells.get(n);
+            c.setBackground(c.getCorrectColor());
+
+        }
+    }
+
     class myMouselistener implements MouseListener {
         private boolean canMove = false;
-        private  GameMap gameMap;
-        public myMouselistener( GameMap gameMap){
+        private GameMap gameMap;
+
+        public myMouselistener(GameMap gameMap) {
             this.gameMap = gameMap;
         }
 
@@ -90,7 +100,7 @@ public class GameMap extends JPanel {
                 }
             } else {
                 if (canMove) {
-                    this.ChessManMove(e);
+                    this.chessManMove(e);
                     canMove = false;
                 }
 
@@ -129,74 +139,86 @@ public class GameMap extends JPanel {
                 ChessMen chessMen = table[e.getY() / 70][e.getX() / 70];
                 chessManMover = chessMen;
                 if (chessMen.getPlayerRole() == gameBoard.getTurn())
-                    positions = chessMen.calculatingMoves();
-                for (int i = 0; i < positions.size(); i++) {
-                    int n = positions.get(i).getRow() * 9 + positions.get(i).getCol();
-                    Cell c = cells.get(n);
-                    c.setBackground(c.getCorrectColor());
-                }
+                   positions = chessMen.calculatingMoves();
+//                for (int i = 0; i < positions.size(); i++) {
+//                    int n = positions.get(i).getRow() * 9 + positions.get(i).getCol();
+//                    Cell c = cells.get(n);
+//                    c.setBackground(c.getCorrectColor());
+//                }
+                paintingCells(positions);
             }
 
         }
 
-        private void ChessManMove(MouseEvent e) {
-            System.out.println("Here1");
-            int flag = 0;
-            int n = e.getY() / 70 * 9 + e.getX() / 70;
-            Cell c = cells.get(n);
-//
-            for (int i = 0; i < chessManMover.calculatingMoves().size(); i++) {
-                if (chessManMover.calculatingMoves().get(i).getCol() == c.getPosition().getCol() && chessManMover.calculatingMoves().get(i).getRow() == c.getPosition().getRow()) {
-                    flag = 1;
-                    break;
-                }
-
-            }
-            if (flag == 1) {
-                ChessMen tempChessMan = table[e.getY() / 70][e.getX() / 70];
-                if (tempChessMan != null) {
-                    if (tempChessMan.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
-                        whiteBase.push(tempChessMan);
-                    else blacBase.push(tempChessMan);
-                }
-                table[e.getY() / 70][e.getX() / 70] = chessManMover;
-                c.addChessMan(chessManMover);
-                n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
-                c = cells.get(n);
-                c.remove(chessManMover);
-                chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
-
-                flag = 0;
-            }
-
-            chessManMover = null;
-
-
-        }
-    }
-//        private void chessManMove( MouseEvent e){
+//        private void ChessManMove(MouseEvent e) {
+//            System.out.println("Here1");
+//            int flag = 0;
 //            int n = e.getY() / 70 * 9 + e.getX() / 70;
 //            Cell c = cells.get(n);
-//            Position target = new Position(e.getY()/70, e.getX()/70);
+////
+//            for (int i = 0; i < chessManMover.calculatingMoves().size(); i++) {
+//                if (chessManMover.calculatingMoves().get(i).getCol() == c.getPosition().getCol() && chessManMover.calculatingMoves().get(i).getRow() == c.getPosition().getRow()) {
+//                    flag = 1;
+//                    break;
+//                }
 //
-//
-//            if ( gameBoard.canMove( chessManMover.getPosition(), target)){
-//                gameBoard.move(chessManMover.getPosition(), target);
-//               // chessManMover.setPosition(target);
-//                //TODO handle kicking the enemie's chessman
+//            }
+//            if (flag == 1) {
+//                ChessMen tempChessMan = table[e.getY() / 70][e.getX() / 70];
+//                if (tempChessMan != null) {
+//                    if (tempChessMan.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE)
+//                        whiteBase.push(tempChessMan);
+//                    else blacBase.push(tempChessMan);
+//                }
+//                table[e.getY() / 70][e.getX() / 70] = chessManMover;
 //                c.addChessMan(chessManMover);
 //                n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
 //                c = cells.get(n);
 //                c.remove(chessManMover);
-//               // chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
+//                chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
 //
-//
+//                flag = 0;
 //            }
+//
 //            chessManMover = null;
 //
+//
 //        }
-//    }
+   // }
+        private void chessManMove( MouseEvent e){
+            int n = e.getY() / 70 * 9 + e.getX() / 70;
+            Cell c = cells.get(n);
+            Position target = new Position(e.getY()/70, e.getX()/70);
+
+
+            if ( gameBoard.canMove( chessManMover.getPosition(), target)){
+                gameBoard.move(chessManMover.getPosition(), target);
+                c.addChessMan(chessManMover);
+                if ( gameBoard.getBlackKickedPieces().size() !=0){
+                        whiteBase.push(gameBoard.getBlackKickedPieceIndex(gameBoard.getBlackKickedPieces().size()-1));
+
+
+
+
+                }
+                if( gameBoard.getWhiteKickedPieces().size() !=0){
+                        blacBase.push(gameBoard.getWhiteKickedPieceIndex(gameBoard.getWhiteKickedPieces().size()-1));
+
+                }
+
+                    n = chessManMover.getPosition().getRow() * 9 + chessManMover.getPosition().getCol();
+                c = cells.get(n);
+                c.remove(chessManMover);
+                //chessManMover.setPosition(new Position(e.getY() / 70, e.getX() / 70));
+
+
+            }
+            chessManMover = null;
+
+        }
+    }
 //    1. handleing "kish" in calculating canGO ( for showing green places)
     // 2. bad az kish shodan ...
 
 }
+

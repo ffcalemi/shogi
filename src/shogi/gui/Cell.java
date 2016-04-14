@@ -149,12 +149,14 @@ public class Cell  extends  JPanel  {
 
 }
     protected void remove(ChessMen chessMen){
-     //   table[chessMen.getPosition().getRow()][chessMen.getPosition().getCol()]=null;
+        //table[chessMen.getPosition().getRow()][chessMen.getPosition().getCol()]=null;
+     //   gameBoard.remover(chessMen.getPosition());
        this.repaint();
 
     }
     protected void addChessMan(ChessMen chessMen ){
-       // table[this.getPosition().getRow()][this.getPosition().getCol()] = chessMen;
+        //table[this.getPosition().getRow()][this.getPosition().getCol()] = chessMen;
+       // gameBoard.adder(chessMen.getPosition() , this.getPosition());
         this.repaint();
     }
 
