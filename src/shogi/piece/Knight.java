@@ -14,6 +14,7 @@ public class Knight extends ChessMen {
 		super.position = pos;
 		super.setPlayerRole(role);
 		super.gameBoard = gameBoard;
+		super.setNormal(true);
 	}
 
 	@Override
@@ -36,33 +37,62 @@ public class Knight extends ChessMen {
 					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() - 2));
 			}
 		} else {
-			if (getPlayerRole() == roles.PLAYER_BLACK_ROLE) {
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() - 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() - 1));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow())))
-					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow()));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow())))
-					allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow()));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() + 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() + 1));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow() - 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol(), this.getPosition().getRow() - 1));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow() + 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol(), this.getPosition().getRow() + 1));
-			} else {
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow())))
-					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow()));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow())))
-					allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow()));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() - 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() - 1));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow() + 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol(), this.getPosition().getRow() + 1));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol(), this.getPosition().getRow() - 1)))
-					allowedMoves.add(new Position(this.getPosition().getCol(), this.getPosition().getRow() - 1));
+			if( this.getPlayerRole()== roles.PLAYER_WHITE_ROLE) {
+				//	v( 0,1)
+				int counter = 1;
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() + counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() + counter));
+				}
+				//v(-1,-1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol() - counter));
+				}
+				//v( -1, +1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() -counter, this.getPosition().getCol() + counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() -counter, this.getPosition().getCol() +counter));
+				}
+				// v( -1,0)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()));
+				}
+				//v( +1,0)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() +counter, this.getPosition().getCol()))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol()));
+				}
+				//v(0,-1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter));
+				}
+			}else if( this.getPlayerRole()== roles.PLAYER_BLACK_ROLE){
+				//	v( 0,-1)
+				int counter = 1;
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() -counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() - counter));
+				}
+				//v(+1,+1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() + counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() + counter));
+				}
+				//v(+ 1, -1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol() - counter));
+				}
+				// v( -1,0)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() - counter, this.getPosition().getCol()));
+				}
+				//v( 1,0)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + counter, this.getPosition().getCol()))) {
+					allowedMoves.add(new Position(this.getPosition().getRow() + counter, this.getPosition().getCol()));
+				}
+				//v(0,+1)
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow(), this.getPosition().getCol() + counter))) {
+					allowedMoves.add(new Position(this.getPosition().getRow(), this.getPosition().getCol() +counter));
+				}
+
+
 			}
+
 		}
 		return  allowedMoves;
 	}
