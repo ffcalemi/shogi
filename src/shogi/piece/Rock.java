@@ -68,12 +68,12 @@ public class Rock extends ChessMen {
 		if (!getNormal()) {
 			if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - 1, this.getPosition().getRow() - 1)))
 				allowedMoves.add(new Position(this.getPosition().getRow() - 1, this.getPosition().getRow() - 1));
-			if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1)))
-				allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 1));
-			if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() + 1)))
-				allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() + 1));
-			if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() - 1)))
-				allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() - 1));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + 1, this.getPosition().getCol() - 1)))
+				allowedMoves.add(new Position(this.getPosition().getRow() +1, this.getPosition().getCol() - 1));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getRow() + 1, this.getPosition().getCol() + 1)))
+				allowedMoves.add(new Position(this.getPosition().getRow() + 1, this.getPosition().getCol() + 1));
+			if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - 1, this.getPosition().getCol() + 1)))
+				allowedMoves.add(new Position(this.getPosition().getRow() - 1, this.getPosition().getCol() + 1));
 		}
 		return allowedMoves;
 	}

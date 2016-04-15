@@ -1,5 +1,6 @@
 package shogi.gui;
 
+
 import shogi.board.GameBoard;
 import shogi.board.Position;
 import shogi.piece.ChessMen;
@@ -30,7 +31,8 @@ public class GameMap extends JPanel {
     private Position position;
     private IncomingChessMen whiteBase;
     private IncomingChessMen blacBase;
-
+    private  int whiteSize =0 ;
+    private int blackSize =0;
     Border bevelBorder = BorderFactory.createRaisedBevelBorder();
     Border lineBorder = LineBorder.createBlackLineBorder();
 
@@ -78,7 +80,6 @@ public class GameMap extends JPanel {
     }
 
     class myMouselistener implements MouseListener {
-        private boolean canMove = false;
         private GameMap gameMap;
 
         public myMouselistener(GameMap gameMap) {
@@ -88,21 +89,65 @@ public class GameMap extends JPanel {
         @Override
 
         public void mouseClicked(MouseEvent e) {
-            if (chessManMover == null) {
+            boolean hasUpgrade = false;
+            if (chessManMover == null && (whiteBase.getAddChesman() == null && blacBase.getAddChesman() == null)) {
                 if (table[e.getY() / 70][e.getX() / 70] != null) {
                     if (gameBoard.canSelect(table[e.getY() / 70][e.getX() / 70].getPosition())) {
-                        this.showAvailableMoves(e);
-                        int n = e.getY() / 70 * 9 + e.getX() / 70;
-                        Cell c = cells.get(n);
-                        c.setBackground(Color.ORANGE);
-                        canMove = true;
+                        ChessMen chessMen = table[e.getY() / 70][e.getX() / 70];
+                        if( gameBoard.mustUpgrade(chessMen)){
+                            MyMessages myMessages = new MyMessages(2);
+                            gameBoard.doUpgrade(chessMen.getPosition());
+                            hasUpgrade = true;
+                        }
+
+                        if( gameBoard.canUpgrade(chessMen) && chessMen.getNormal() == true&& !hasUpgrade){
+                            MyMessages myMessages = new MyMessages(1);
+                            if( myMessages.getResult()== 0 ){
+                                gameBoard.doUpgrade(chessMen.getPosition());
+                                hasUpgrade = true;
+                            }
+                        }
+                        if( !hasUpgrade) {
+                            this.showAvailableMoves(e, chessMen);
+                            int n = e.getY() / 70 * 9 + e.getX() / 70;
+                            Cell c = cells.get(n);
+                            c.setBackground(Color.ORANGE);
+                        }else{
+                            hasUpgrade = false;
+                        }
                     }
                 }
-            } else {
-                if (canMove) {
-                    this.chessManMove(e);
-                    canMove = false;
+            } else if( chessManMover ==null && (whiteBase.getAddChesman()!= null | blacBase.getAddChesman() != null)){
+                if( whiteBase.getAddChesman()!=null) {
+                    if (gameBoard.canPut(new Position(e.getY() / 70, e.getX() / 70), whiteBase.getAddChesman())) {
+                        gameBoard.puttingNewChessManInMap(new Position(e.getY() / 70, e.getX() / 70), whiteBase.getAddChesman());
+                        int n = e.getY() / 70 * 9 + e.getX() / 70;
+                        ChessMen ch;
+                        Cell c = cells.get(n);
+                        c.repaint();
+                        whiteBase.setAddChesman(null);
+                        int index = whiteBase.findingIndex(whiteBase.getTempE());
+                        whiteBase.getPieces().remove(index);
+                        whiteBase.repaint();
+
+                    }
+                }else  if( blacBase.getAddChesman() !=null){
+                    gameBoard.puttingNewChessManInMap(new Position(e.getY()/70,e.getX()/70),blacBase.getAddChesman());
+                    int n = e.getY() / 70 * 9 + e.getX() / 70;
+                    ChessMen ch ;
+                    Cell c = cells.get(n);
+                    blacBase.setAddChesman(null);
+                    c.repaint();
+                    int index = blacBase.findingIndex(blacBase.getTempE());
+                    blacBase.getPieces().remove(index);
+                    blacBase.repaint();
+
+
+
                 }
+            }
+            else {
+                    this.chessManMove(e);
 
             }
 
@@ -133,19 +178,13 @@ public class GameMap extends JPanel {
 
         }
 
-        private void showAvailableMoves(MouseEvent e) {
+        private void showAvailableMoves(MouseEvent e , ChessMen chessMen) {
             {
                 ArrayList<Position> positions = new ArrayList<>();
-                ChessMen chessMen = table[e.getY() / 70][e.getX() / 70];
                 chessManMover = chessMen;
                 if (chessMen.getPlayerRole() == gameBoard.getTurn())
                    positions = chessMen.calculatingMoves();
-//                for (int i = 0; i < positions.size(); i++) {
-//                    int n = positions.get(i).getRow() * 9 + positions.get(i).getCol();
-//                    Cell c = cells.get(n);
-//                    c.setBackground(c.getCorrectColor());
-//                }
-                paintingCells(positions);
+              paintingCells(positions);
             }
 
         }
@@ -187,6 +226,7 @@ public class GameMap extends JPanel {
    // }
         private void chessManMove( MouseEvent e){
             int n = e.getY() / 70 * 9 + e.getX() / 70;
+            ChessMen ch ;
             Cell c = cells.get(n);
             Position target = new Position(e.getY()/70, e.getX()/70);
 
@@ -194,15 +234,22 @@ public class GameMap extends JPanel {
             if ( gameBoard.canMove( chessManMover.getPosition(), target)){
                 gameBoard.move(chessManMover.getPosition(), target);
                 c.addChessMan(chessManMover);
-                if ( gameBoard.getBlackKickedPieces().size() !=0){
-                        whiteBase.push(gameBoard.getBlackKickedPieceIndex(gameBoard.getBlackKickedPieces().size()-1));
+                if ( gameBoard.getBlackKickedPieces().size() != blackSize){
+                    blackSize++;
+                    ch = gameBoard.getBlackKickedPieceIndex(gameBoard.getBlackKickedPieces().size()-1);
+               //     gameBoard.setBlackKickedPiceIndex(ch);
+                        whiteBase.push(ch);
 
 
-
-
+//  TODO  :
+//  TODO  :gameBoard.getWhiteKickedPieces().size() !=0
                 }
-                if( gameBoard.getWhiteKickedPieces().size() !=0){
-                        blacBase.push(gameBoard.getWhiteKickedPieceIndex(gameBoard.getWhiteKickedPieces().size()-1));
+                if( gameBoard.getWhiteKickedPieces().size() != whiteSize){
+                    whiteSize++;
+                    ch = gameBoard.getWhiteKickedPieceIndex(gameBoard.getWhiteKickedPieces().size()-1);
+               //     gameBoard.setWhiteKickedPieceIndex(ch);
+                        blacBase.push(ch);
+
 
                 }
 

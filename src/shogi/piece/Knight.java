@@ -31,10 +31,10 @@ public class Knight extends ChessMen {
 				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 2)))
 					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() + 2));
 			}else {
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() - 2)))
-					allowedMoves.add(new Position(this.getPosition().getCol() + 1, this.getPosition().getRow() - 2));
-				if (gameBoard.canGo(this, new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() - 2)))
-					allowedMoves.add(new Position(this.getPosition().getCol() - 1, this.getPosition().getRow() - 2));
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() -2 , this.getPosition().getCol() + 1)))
+					allowedMoves.add(new Position(this.getPosition().getRow() -2 , this.getPosition().getCol() +1));
+				if (gameBoard.canGo(this, new Position(this.getPosition().getRow() - 2, this.getPosition().getCol() - 1)))
+					allowedMoves.add(new Position(this.getPosition().getRow() - 2, this.getPosition().getCol() - 1));
 			}
 		} else {
 			if( this.getPlayerRole()== roles.PLAYER_WHITE_ROLE) {

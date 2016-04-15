@@ -19,12 +19,50 @@ import java.util.ArrayList;
 public class IncomingChessMen extends JPanel {
     private Color whitePlayerBackground = new Color(139, 69, 19);
     private Color blackPlayerBackground = new Color(210, 180, 140);
+    private  MouseEvent tempE ;
+
+    public MouseEvent getTempE() {
+        return tempE;
+    }
+
+    public void setTempE(MouseEvent tempE) {
+        this.tempE = tempE;
+    }
+
+    public void setPieces(ArrayList<ChessMen> pieces) {
+        this.pieces = pieces;
+    }
+
+    public ArrayList<ChessMen> getPieces() {
+
+        return pieces;
+    }
+
+    public void setAddChesman(ChessMen addChesman) {
+        this.addChesman = addChesman;
+
+    }
+
+    public ChessMen getAddChesman() {
+
+        return addChesman;
+    }
+
     private ArrayList<ChessMen> pieces = new ArrayList<>();
     private ChessMen kickedChessman;
     private GameBoard gameBoard;
-    private ChessMen add;
+    private ChessMen addChesman;
     private ArrayList<Position> putable = new ArrayList<>();
-    private  GameMap gameMap;
+    private GameMap gameMap;
+    private boolean isGoingtoPut = false;
+
+    public boolean isGoingtoPut() {
+        return isGoingtoPut;
+    }
+
+    public void setGoingtoPut(boolean goingtoPut) {
+        isGoingtoPut = goingtoPut;
+    }
 
     public void setPutable(ArrayList<Position> putable) {
         this.putable = putable;
@@ -47,9 +85,11 @@ public class IncomingChessMen extends JPanel {
 
     private roles role;
 
-    public IncomingChessMen(roles role, GameBoard gameBoard ) {
+    public IncomingChessMen(roles role, GameBoard gameBoard) {
         this.role = role;
         this.gameBoard = gameBoard;
+        MyMouselistener ml = new MyMouselistener(this.pieces, gameBoard);
+        this.addMouseListener(ml);
         if (role == roles.PLAYER_WHITE) {
 
             this.setBackground(this.whitePlayerBackground);
@@ -71,15 +111,14 @@ public class IncomingChessMen extends JPanel {
             myLabel.setFont(myFont());
             myLabel.setForeground(Color.BLACK);
             this.add(myLabel);
-            MyMouselistener ml = new MyMouselistener(this.pieces, gameBoard);
-            this.addMouseListener(ml);
-            this.pieces = ml.getPieces();
-            repaint();
+
+//            this.pieces = ml.getPieces();
 
         }
 
     }
-    public void setGameMap(GameMap gameMap){
+
+    public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
 
     }
@@ -132,6 +171,7 @@ public class IncomingChessMen extends JPanel {
 
     protected void push(ChessMen chessMan) {
         pieces.add(chessMan);
+
         kickedChessman = chessMan;
         repaint();
 
@@ -140,17 +180,17 @@ public class IncomingChessMen extends JPanel {
     //TODO handle : pop()
     protected void pop(ArrayList<ChessMen> ch) {
         if (this.role == roles.PLAYER_WHITE) {
-            MyMouselistener ml = new MyMouselistener(this.pieces, gameBoard);
-            this.addMouseListener(ml);
-            //   this.addMouseListener (new MyMouselistener(this.pieces));
+//            MyMouselistener ml = new MyMouselistener(this.pieces, gameBoard);
+//            this.addMouseListener(ml);
+//            //   this.addMouseListener (new MyMouselistener(this.pieces));
             this.pieces = ch;
             repaint();
 
 
         } else {
-            MyMouselistener ml = new MyMouselistener(this.pieces, gameBoard);
-            this.addMouseListener(ml);
-            //   this.addMouseListener (new MyMouselistener(this.pieces));
+//            MyMouselistener ml = new MyMouselistener(this.pieces, gameBoard);
+//            this.addMouseListener(ml);
+//            //   this.addMouseListener (new MyMouselistener(this.pieces));
             this.pieces = ch;
             repaint();
 
@@ -215,6 +255,28 @@ public class IncomingChessMen extends JPanel {
             }
         }
     }
+    public int findingIndex(MouseEvent e) {
+        this.tempE =e;
+        int x, y;
+        x = -1;
+        int index;
+        if (e.getX() < 5) ;
+        else if (e.getX() <= 60)
+            x = 0;
+        else if (e.getX() <= 55 + 60)
+            x = 1;
+        else if (e.getX() <= 170)
+            x = 2;
+        else if (e.getX() > 170) ;
+        y = (e.getY() - 20) / 55;
+        index = y * 3 + x;
+        if (x == -1)
+            return -1;
+        if (index >= pieces.size())
+            return -1;
+        else return index;
+
+    }
 
 
     @Override
@@ -250,17 +312,21 @@ public class IncomingChessMen extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             int index;
-            index = this.findingIndex(e);
-            if (index != -1) {
-                add = gameBoard.getBlackKickedPieceIndex(index);
-                if (role == roles.PLAYER_WHITE) {
-                    gameMap.paintingCells(gameBoard.calculatingPuts(add));
-                }
-                else {
-                    gameMap.paintingCells(gameBoard.calculatingPuts(add));
+
+                index = findingIndex(e);
+                if (index != -1) {
+                    isGoingtoPut = true;
+                    if (role == roles.PLAYER_WHITE) {
+                        addChesman = gameBoard.getBlackKickedPieceIndex(index);
+                        gameMap.paintingCells(gameBoard.calculatingPuts(addChesman));
+                    } else {
+                        addChesman = gameBoard.getWhiteKickedPieceIndex(index);
+                        gameMap.paintingCells(gameBoard.calculatingPuts(addChesman));
+                    }
+
                 }
 
-            }
+
 //           ic.setAddToMapChessMan(this.pieces.get(index)) ;
 //        this.pieces.remove(index);
 //        ic.pop(this.pieces);
@@ -288,27 +354,6 @@ public class IncomingChessMen extends JPanel {
 
         }
 
-        private int findingIndex(MouseEvent e) {
-            int x, y;
-            x = -1;
-            int index;
-            if (e.getX() < 5) ;
-            else if (e.getX() <= 60)
-                x = 0;
-            else if (e.getX() <= 55 + 60)
-                x = 1;
-            else if (e.getX() <= 170)
-                x = 2;
-            else if (e.getX() > 170) ;
-            y = (e.getY() - 20) / 55;
-            index = y * 3 + x;
-            if (x == -1)
-                return -1;
-            if (index >= pieces.size())
-                return -1;
-            else return index;
-
-        }
     }
 
 }
