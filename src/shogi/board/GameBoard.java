@@ -15,7 +15,7 @@ public class GameBoard implements Cloneable {
 	private boolean isWhiteChecked;
 	private boolean isBlackChecked;
 	private boolean isWhiteTurn;
-
+	private  boolean isAttacked ;
 	public GameBoard() {
 		this.table = new ChessMen[9][9];
 		whiteKickedPieces = new ArrayList<>();
@@ -68,7 +68,7 @@ public class GameBoard implements Cloneable {
 		for (int i = 0; i < 9; i++)
 			table[2][i] = new Pawn(new Position(2, i), ChessMen.roles.PLAYER_BLACK_ROLE, this);
 
-		table[4][4] = new Rock(new Position(4, 4), ChessMen.roles.PLAYER_BLACK_ROLE, this);
+//		table[4][4] = new Rock(new Position(4, 4), ChessMen.roles.PLAYER_BLACK_ROLE, this);
 
 		//  White pieces putting
 		table[8][0] = new Lance(new Position(8, 0), ChessMen.roles.PLAYER_WHITE_ROLE, this);
@@ -210,6 +210,10 @@ public class GameBoard implements Cloneable {
 		return blackKickedPieces;
 	}
 
+	public void setBlackKickedPieces(ArrayList<ChessMen> blackKickedPieces) {
+		this.blackKickedPieces = blackKickedPieces;
+	}
+
 	/**
 	 * Returns the ChessMen object located in the position in the array
 	 *
@@ -217,6 +221,7 @@ public class GameBoard implements Cloneable {
 	 * @return The ChessMen object located in the position
 	 */
 	public ChessMen getChessMan(Position position) {
+
 		/**
 		 * Checks whether the taken position is available(in the array range) or not
 		 * If it is not so, an critical error has happened and it should be exited.
@@ -317,10 +322,17 @@ public class GameBoard implements Cloneable {
 	}
 
 	public ChessMen getWhiteKickedPieceIndex(int index) {
+		System.out.println("index is \t "+ index);
 		return whiteKickedPieces.get(index);
 	}
 	public ChessMen getBlackKickedPieceIndex(int index) {
 		return blackKickedPieces.get(index);
+	}
+	public void setBlackKickedPiceIndex(ChessMen ch){
+		this.blackKickedPieces.add(ch);
+	}
+	public void setWhiteKickedPieceIndex(ChessMen ch){
+		this.whiteKickedPieces.add(ch);
 	}
 	public void setWhiteKickedPieces(ArrayList<ChessMen> whiteKickedPieces) {
 		this.whiteKickedPieces = whiteKickedPieces;
@@ -328,7 +340,7 @@ public class GameBoard implements Cloneable {
 
 	public ArrayList<Position> calculatingPuts(ChessMen  ch){
 		ArrayList<Position> res = new ArrayList<>();
-		if ( ch.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE){
+		if ( ch.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE && this.getTurn() == ChessMen.roles.PLAYER_BLACK_ROLE){
 			for (int i = 0; i < 6; i++) {
 				for (int j = 0; j < 9; j++) {
 					if( table[i][j] == null)
@@ -339,8 +351,79 @@ public class GameBoard implements Cloneable {
 
 			}
 		}
+		else if ( ch.getPlayerRole() == ChessMen.roles.PLAYER_WHITE_ROLE && this.getTurn() == ChessMen.roles.PLAYER_WHITE_ROLE){
+			for (int i = 8; i > 2 ; i--) {
+				for (int j = 0; j < 9; j++) {
+					if ( table[i][j] == null)
+						res.add(new Position(i,j));
+				}
+
+			}
+		}
 		return  res;
 
+	}
+	public boolean canPut(Position position, ChessMen chessMan){
+		boolean isSame = false;
+
+		for ( Position pos : this.calculatingPuts(chessMan)){
+			if( pos.getRow() == position.getRow() && pos.getCol() == position.getCol()){
+				isSame = true;
+				break;
+			}
+
+		}
+		return isSame;
+	}
+	public void puttingNewChessManInMap(Position position , ChessMen chessMen){
+		chessMen.setPosition(position);
+		table[chessMen.getPosition().getRow()][chessMen.getPosition().getCol()] =chessMen;
+		isWhiteTurn = !isWhiteTurn;
+
+	}
+	public boolean canUpgrade(ChessMen chessMen){
+		if( chessMen.getClass().getSimpleName().equals("GoldenGeneral") || chessMen.getClass().getSimpleName().equals("King"))return  false;
+		if( chessMen.getPlayerRole() == ChessMen.roles.PLAYER_WHITE_ROLE){
+			if( chessMen.getPosition().getRow() ==0 || chessMen.getPosition().getRow() == 1 || chessMen.getPosition().getRow()==2  )
+				return true;
+			else return false;
+		}
+		else if( chessMen.getPlayerRole() == ChessMen.roles.PLAYER_BLACK_ROLE){
+			if ( chessMen.getPosition().getRow() == 8 || chessMen.getPosition().getRow()==7 || chessMen.getPosition().getRow()==6)
+				return true;
+			else return  false;
+		}
+		return false;
+
+
+	}
+	public void doUpgrade(Position position){
+		ChessMen chessMen = table[position.getRow()][position.getCol()];
+		chessMen.setNormal(false);
+		isWhiteTurn = !isWhiteTurn;
+	}
+	public boolean mustUpgrade(ChessMen chessMen){
+		if (chessMen.getClass().getSimpleName().equals("Pawn") || chessMen.getClass().getSimpleName().equals("Lance")){
+			if( chessMen.getPlayerRole() == ChessMen.roles.PLAYER_WHITE_ROLE){
+				if( chessMen.getPosition().getRow()==0) return true;
+				else return false;
+			}else{
+				if( chessMen.getPosition().getRow()== 8) return true;
+				else return false;
+			}
+
+		}else if( chessMen.getClass().getSimpleName().equals("Knight")){
+			if( chessMen.getPlayerRole() == ChessMen.roles.PLAYER_WHITE_ROLE) {
+				if (chessMen.getPosition().getRow() == 0 || chessMen.getPosition().getRow() == 1) return true;
+				else return false;
+			}else {
+					if(chessMen.getPosition().getRow() == 8 || chessMen.getPosition().getRow() == 7) return  true;
+					else return  false;
+				}
+
+
+		}
+		else return  false;
 	}
 	@Override
 	public String toString() {
